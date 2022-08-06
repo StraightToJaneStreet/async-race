@@ -1,9 +1,12 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
+
 import pageReducer from './feature/pages/slice';
+import garageReducer from './feature/garage/slice';
 
 const store = configureStore({
   reducer: combineReducers({
-    pages: pageReducer
+    pages: pageReducer,
+    garage: garageReducer
   })
 });
 
