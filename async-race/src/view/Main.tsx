@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { RootState } from '../model/store';
 import Page from '../core/Page';
 
-import Context from './Context';
+import Context from './AppContext';
 
 import Winners from './Pages/Winners';
 import Garage from './Pages/Garage';
@@ -17,12 +17,13 @@ interface StateProps {
 const mapState = (state: RootState): StateProps => ({ currentPage: state.pages.value });
 
 const Main = (props: StateProps) => {
-  const { setPage } = useContext(Context);
+  const context = useContext(Context);
+  const { handleSetPage } = context;
 
   return (
     <>
-      <Button handleClick={() => setPage(Page.Garage)} label='To garage'/>
-      <Button handleClick={() => setPage(Page.Winners)} label='To winners'/>
+      <Button handleClick={() => handleSetPage(Page.Garage)} label='To garage'/>
+      <Button handleClick={() => handleSetPage(Page.Winners)} label='To winners'/>
       {
         props.currentPage === Page.Garage
         ? <Garage/>
