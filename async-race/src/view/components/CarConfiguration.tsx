@@ -1,6 +1,11 @@
 import React from 'react';
 
-export default function CarConfiguration() {
+interface CarConfigurationProps {
+  updateColor: (newColor: string) => void;
+  updateName: (newName: string) => void;
+}
+
+export default function CarConfiguration(_props: CarConfigurationProps) {
   return (
     <>
       <input type="text" />
