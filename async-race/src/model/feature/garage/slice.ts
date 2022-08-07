@@ -19,6 +19,10 @@ const slice = createSlice({
 
     actionAddCars(state, { payload }: PayloadAction<Car[]>) {
       carAdapter.addMany(state, payload);
+    },
+
+    actionDeleteCar(state, { payload }: PayloadAction<number>) {
+      carAdapter.removeOne(state, payload);
     }
   }
 });
@@ -26,5 +30,6 @@ export const selectCars = (state: GarageState): Car[] => carAdapter.getSelectors
 export const {
   actionAddCar,
   actionAddCars,
+  actionDeleteCar,
 } = slice.actions;
 export default slice.reducer;

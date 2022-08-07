@@ -6,34 +6,47 @@ import { RootState } from '../../model/store';
 import { Car } from '../../core/Car';
 import { selectCars } from '../../model/feature/garage/slice';
 import { connect } from 'react-redux';
-import CarsList from '../components/CarsList';
+import TrackList from '../components/TrackList';
 import Context from '../AppContext';
+import AppContext from '../AppContext';
 
-interface CreateCarProps {
-  handleCreate: (name: string, color: string) => void
-}
+const INITIAL_COLOR = '#000000';
 
-function CreateCar({ handleCreate }: CreateCarProps) {
-  const [color, setColor] = useState('#000000');
+interface CreateCarProps { }
+
+function CreateCar(_props: CreateCarProps) {
+  const [color, setColor] = useState('');
   const [name, setName] = useState('');
+
+  const { handleCreateCar } = useContext(AppContext);
+
+  const createCar = () => {
+    handleCreateCar(name, color);
+    setName('');
+    setColor(INITIAL_COLOR);
+  }
 
   return (
     <div>
-      <CarConfiguration udpateColor={setColor} updateName={setName}/>
-      <Button handleClick={() => handleCreate(name, color)} label='Create'/>
+      <CarConfiguration
+        name={name} color={color}
+        updateColor={setColor} updateName={setName}/>
+      <Button handleClick={createCar} label='Create'/>
     </div>
   );
 }
 
-interface UpdateCarProps {
-  handleUpdate: () => void
-}
+interface UpdateCarProps { }
 
-function UpdateCar({ handleUpdate }: UpdateCarProps) {
+function UpdateCar(_props: UpdateCarProps) {
+  const [color, setColor] = useState(INITIAL_COLOR);
+  const [name, setName] = useState('');
   return (
     <div>
-      <CarConfiguration/>
-      <Button handleClick={handleUpdate} label='Update'/>
+      <CarConfiguration
+        name={name} color={color}
+        updateColor={setColor} updateName={setName}/>
+      <Button handleClick={() => {}} label='Update'/>
     </div>
   );
 }
@@ -51,8 +64,6 @@ function Garage({ cars }: GarageProps) {
   const context = useContext(Context);
 
   const {
-    handleCreateCar,
-    handleUpdateCar,
     handleRaceStart,
     handleGenerateCars,
     handleReset
@@ -61,8 +72,8 @@ function Garage({ cars }: GarageProps) {
   return (
     <>
       <h1>Garage</h1>
-      <CreateCar handleCreate={(name: string, color) => handleCreateCar(name, color)}/>
-      <UpdateCar handleUpdate={handleUpdateCar}/>
+      <CreateCar/>
+      <UpdateCar/>
       <div>
         <Button handleClick={handleRaceStart} label='Race'/>
         <Button handleClick={handleReset} label='Reset'/>
@@ -70,7 +81,7 @@ function Garage({ cars }: GarageProps) {
       </div>
       <h2>Garage ({cars.length})</h2>
       <div className="garage__cars">
-        <CarsList cars={cars.filter((_car, ind) => ind < 20)}/>
+        <TrackList cars={cars.filter((_car, ind) => ind < 20)}/>
       </div>
     </>
   );

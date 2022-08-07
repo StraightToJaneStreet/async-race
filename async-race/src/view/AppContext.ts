@@ -1,10 +1,13 @@
 import { createContext } from "react"
-import { Car } from "../core/Car"
 import Page from "../core/Page"
 
 export type AppContext = {
   handleSetPage: (page: Page) => void
   handleCreateCar: (name: string, color: string) => void,
+
+  handleCarStart: (carId: number) => void,
+  handleCarRemove: (carId: number) => void,
+
   handleUpdateCar: () => void,
   handleRaceStart: () => void,
   handleGenerateCars: () => void,
@@ -14,6 +17,10 @@ export type AppContext = {
 export default createContext<AppContext>({
   handleSetPage: (_page) => {},
   handleCreateCar: (_name, _color) => {},
+
+  handleCarStart: (_carId: number) => {},
+  handleCarRemove: (_carId: number) => {},
+
   handleUpdateCar: () => {},
   handleRaceStart: () => {},
   handleGenerateCars: () => {},
