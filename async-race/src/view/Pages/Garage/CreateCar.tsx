@@ -39,7 +39,10 @@ function CreateCar({ name, color }: CreateCarProps) {
         name={name} color={color}
         updateColor={(value) => dispatch(actionSetColor(value))}
         updateName={(value) => dispatch(actionSetName(value))}/>
-      <Button handleClick={createCar} label='Create'/>
+      <Button
+        label='Create'
+        enabled={name.length !== 0}
+        handleClick={createCar}/>
     </div>
   );
 }
