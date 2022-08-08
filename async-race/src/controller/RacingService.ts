@@ -7,7 +7,10 @@ export default class RacingService {
     const api = ApiService.getInstance();
     api
       .startEngine(carId)
-      .then(({ velocity, distance }) => {})
+      .then(({ velocity, distance }) => {
+        console.log(velocity);
+        console.log(distance);
+      })
   }
 
   startRace() {
