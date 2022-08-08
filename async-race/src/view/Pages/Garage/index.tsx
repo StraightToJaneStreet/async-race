@@ -30,20 +30,19 @@ function Garage({ cars }: GarageProps) {
   } = context;
 
   return (
-    <>
-      <h1>Garage</h1>
+    <div className="garage">
       <CreateCar/>
       <UpdateCar/>
-      <div>
+      <div className="garage__buttons">
         <Button handleClick={handleRaceStart} label='Race'/>
         <Button handleClick={handleReset} label='Reset'/>
         <Button handleClick={handleGenerateCars} label='Generate cars'/>
       </div>
-      <h2>Garage ({cars.length})</h2>
+      <h2 className="garage__cars-counter">Garage ({cars.length})</h2>
       <div className="garage__cars">
         <TrackList cars={cars.filter((_car, ind) => ind < 20)}/>
       </div>
-    </>
+    </div>
   );
 }
 

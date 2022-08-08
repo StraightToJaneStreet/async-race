@@ -23,7 +23,7 @@ function UpdateCar({ name, color }: UpdateCarProps) {
   const dispatch = useDispatch();
 
   return (
-    <div>
+    <div className="configurator configurator__update">
       <CarConfiguration
         name={name} color={color}
         updateName={(value) => dispatch(actionSetName(value))}

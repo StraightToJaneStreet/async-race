@@ -3,11 +3,12 @@ import React, { useContext } from 'react';
 import { Car } from '../../core/Car';
 import AppContext from '../AppContext';
 import Button from './Button';
+import CarComponent from './Car';
+
 
 interface TrackProps {
   car: Car
 }
-
 
 
 const Track = ({ car }: TrackProps) => {
@@ -18,11 +19,13 @@ const Track = ({ car }: TrackProps) => {
 
   return (
     <div className="track">
-      <Button handleClick={() => handleCarStart(car.id)} label='Start'/>
-      <Button handleClick={() => handleCarRemove(car.id)} label='Remove'/>
-      <p>Id: {car.id}</p>
-      <p>Color: {car.color}</p>
-      <p>Name: {car.name}</p>
+      <div className="track__buttons">
+        <Button handleClick={() => handleCarStart(car.id)} label='Start'/>
+        <Button handleClick={() => handleCarRemove(car.id)} label='Remove'/>
+      </div>
+      <div className="track__road">
+        <CarComponent color={car.color}/>
+      </div>
     </div>
   )
 }

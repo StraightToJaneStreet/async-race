@@ -34,7 +34,7 @@ function CreateCar({ name, color }: CreateCarProps) {
   }
 
   return (
-    <div>
+    <div className="configurator configurator__create-car">
       <CarConfiguration
         name={name} color={color}
         updateColor={(value) => dispatch(actionSetColor(value))}

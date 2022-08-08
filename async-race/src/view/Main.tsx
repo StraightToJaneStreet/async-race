@@ -21,7 +21,7 @@ const Main = (props: StateProps) => {
   const { handleSetPage } = context;
 
   return (
-    <>
+    <div className="application">
       <Button handleClick={() => handleSetPage(Page.Garage)} label='To garage'/>
       <Button handleClick={() => handleSetPage(Page.Winners)} label='To winners'/>
       {
@@ -31,7 +31,7 @@ const Main = (props: StateProps) => {
           ? <Winners/>
           : <p>Invalid page</p>
       }
-    </>
+    </div>
   );
 }
 
