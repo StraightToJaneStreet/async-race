@@ -5,7 +5,9 @@ export default class RacingService {
 
   startCar(carId: number) {
     const api = ApiService.getInstance();
-    api.startEngine(carId);
+    api
+      .startEngine(carId)
+      .then(({ velocity, distance }) => {})
   }
 
   startRace() {
