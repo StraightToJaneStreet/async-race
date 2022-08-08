@@ -1,3 +1,5 @@
+import { Car } from "../core/Car";
+
 enum HTTPMethod {
   GET = 'GET',
   POST = 'POST',
@@ -10,6 +12,13 @@ interface CreateCarResponseBody {
   color: string;
   id: number;
 }
+
+interface StartEngineResponseBody {
+  velocity: number;
+  distance: number;
+}
+
+type LoadCarsResponse = Car[];
 
 type Protocol = 'http' | 'https';
 
@@ -72,10 +81,15 @@ export default class ApiService {
     const data = new FormData();
     data.set('name', name);
     data.set('color', color);
+    
+    const requestBody = JSON.stringify(Object.fromEntries(data));
 
-    const options =  {
+    const options: RequestInit =  {
+      headers: {
+        'Content-Type': 'application/json'
+      },
       method: HTTPMethod.POST,
-      body: data
+      body: requestBody
     }
 
     const result = fetch(endpoint, options)
@@ -94,7 +108,7 @@ export default class ApiService {
     });
   }
 
-  startEngine(carId: number) {
+  startEngine(carId: number): Promise<StartEngineResponseBody> {
     const params: StartEngineParams = {
       id: `${carId}`,
       status: 'started'
@@ -102,11 +116,18 @@ export default class ApiService {
 
     const endpoint = createURIWithQueryParams(this.protocol, this.address, this.pointEngine, params);
 
-    const result = fetch(endpoint, {
-      method: HTTPMethod.PATCH
-    })
+    const result = fetch(endpoint, { method: HTTPMethod.PATCH })
+      .then((response) => response.json() as Promise<StartEngineResponseBody>);
 
     return result;
+  }
+
+  loadCars(): Promise<Car[]> {
+    const endpoint = createURI(this.protocol, this.address, this.pointGarage);
+
+    return fetch(endpoint, { method: HTTPMethod.GET })
+      .then((response) => response.json())
+      .then((cars: LoadCarsResponse) => cars);
   }
 
   setEngineDriveMode(carId: number) {

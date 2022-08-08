@@ -22,7 +22,8 @@ export default class GarageController {
   }
 
   protected loadCars() {
-    this.api.load
+    this.api.loadCars()
+      .then((cars) => this.modelAddCars(cars));
   }
 
   constructor() {
