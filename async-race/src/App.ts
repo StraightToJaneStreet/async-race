@@ -19,6 +19,7 @@ export default class App {
   }
 
   run() {
+    this.garageController.initialize();
     const appContext: AppContext = {
       handleSetPage: this.pagesController.setPage.bind(this.pagesController),
       handleCreateCar: this.garageController.createCar.bind(this.garageController),
