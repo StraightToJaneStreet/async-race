@@ -10,7 +10,7 @@ interface CarsListProps {
 const TrackList = ({ cars }: CarsListProps) => {
   return (
     <>
-    {cars.map(car => <Track key={car.id} car={car}/>)}
+      {cars.map(car => <Track key={car.id} car={car}/>)}
     </>
   );
 }
