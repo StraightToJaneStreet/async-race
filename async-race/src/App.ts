@@ -15,7 +15,6 @@ export default class App {
   protected reactRoot: ReactDOM.Root;
   protected pagesController =  new PagesController();
   protected garageController = new GarageController();
-  protected racingService: RacingService = RacingService.getInstance();
   protected ticker: RealtimeTickerService;
 
   constructor(root: HTMLElement) {
@@ -33,16 +32,18 @@ export default class App {
 
     this.garageController.initialize();
 
+    const racingService = RacingService.getInstance();
+
     const appContext: AppContext = {
       handleSetPage: this.pagesController.setPage.bind(this.pagesController),
       handleCreateCar: this.garageController.createCar.bind(this.garageController),
       handleGenerateCars: this.garageController.generateCars.bind(this.garageController),
 
-      handleCarStart: this.racingService.startCar.bind(this.racingService),
-      handleCarReset: this.racingService.stopCarEngine.bind(this.racingService),
+      handleCarStart: racingService.startCar.bind(racingService),
+      handleCarReset: racingService.stopCarEngine.bind(racingService),
       handleCarRemove: this.garageController.removeCar.bind(this.garageController),
 
-      handleRaceStart: this.racingService.startRace.bind(this.racingService),
+      handleRaceStart: racingService.startRace.bind(racingService),
 
       handleReset: () => {},
       handleUpdateCar: () => {},
