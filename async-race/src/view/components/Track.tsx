@@ -4,6 +4,7 @@ import { Car } from '../../core/Car';
 import AppContext from '../AppContext';
 import Button from './Button';
 import CarComponent from './Car';
+import EngineStatus from './EngineStatus';
 
 
 interface TrackProps {
@@ -19,9 +20,13 @@ const Track = ({ car }: TrackProps) => {
 
   return (
     <div className="track">
-      <div className="track__header">
+      <div className="track__header">        
         <Button handleClick={() => handleCarStart(car.id)} label='Start'/>
-        <Button handleClick={() => handleCarRemove(car.id)} label='Remove'/>
+        <Button handleClick={() => handleCarStart(car.id)} label='Select'/>
+        <Button handleClick={() => handleCarRemove(car.id)} label='Remove'/>        
+      </div>
+      <div className="track__header">
+        <EngineStatus/>
         <span className='track__car-name'>{car.name}</span>
       </div>
       <div className="track__road">
