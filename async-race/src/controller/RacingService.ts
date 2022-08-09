@@ -36,7 +36,7 @@ export default class RacingService {
           store.dispatch(actionInitializeTrack(init));
 
           return api.setEngineDriveMode(carId);
-        })        
+        })
         .then(
           (result) => {
             if (result) {
@@ -62,7 +62,7 @@ export default class RacingService {
 
   startRace(carIds: number[]): void {
     const tracks = carIds.map((carId) => this.createTrackPromise(carId));
-    
+
     new Promise((resolve, reject) => {
       let rejectionsCount = 0;
       const promisesCount = tracks.length;
@@ -78,7 +78,7 @@ export default class RacingService {
     .then((winnerId) => { console.log('Winner: ', winnerId)});
   }
 
-  resetRace(carIds: number[]) {
+  resetRace(_carIds: number[]) {
 
   }
 
