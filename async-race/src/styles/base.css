@@ -1,0 +1,71 @@
+body {
+  margin: 5px;
+}
+
+.button {
+  text-transform: uppercase;
+  font-weight: bold;
+  margin: 5px;
+}
+
+.configurator {
+  margin-bottom: 20px;
+}
+
+.track {
+  border: 1px solid black;
+  margin-bottom: 30px;
+}
+
+.track__header {
+  padding-top: 6px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.track__road {
+  box-sizing: border-box;
+  padding-top: 5px;
+  border-right: 100px solid lightgreen;
+  background-color: lightgray;
+}
+
+.engine-status {
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.engine-status__state {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid black;
+  border-radius: 50%;
+}
+
+.engine-status__state--start {
+  background-color: green;
+}
+
+.engine-status__state--running {
+  background-color: yellow;
+}
+
+.engine-status__state--finished {
+  background-color: red;
+}
+
+.engine-status__broken {
+  padding: 3px;
+  border: 1px solid black;
+  height: 20px;
+  text-align: center;
+  
+  justify-content: center;
+  align-items: center;
+  border-radius: 2px;
+}

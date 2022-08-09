@@ -5,7 +5,7 @@ import replace from '@rollup/plugin-replace';
 import typescript from '@rollup/plugin-typescript';
 import serve from 'rollup-plugin-serve';
 import livereload from 'rollup-plugin-livereload';
-import scss from 'rollup-plugin-scss';
+import css from 'rollup-plugin-import-css';
 
 export default {
   input: "src/index.ts",
@@ -16,7 +16,7 @@ export default {
   },
   plugins: [
     typescript(),
-    scss(),
+    css(),
     babel({
       sourceMaps: 'both',
       babelHelpers: 'bundled',
