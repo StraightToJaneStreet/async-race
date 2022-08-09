@@ -15,7 +15,7 @@ export default class App {
   protected reactRoot: ReactDOM.Root;
   protected pagesController =  new PagesController();
   protected garageController = new GarageController();
-  protected racingService = new RacingService();
+  protected racingService: RacingService = RacingService.getInstance();
   protected ticker: RealtimeTickerService;
 
   constructor(root: HTMLElement) {
@@ -30,9 +30,9 @@ export default class App {
 
     this.ticker.registerCallback(progressUpdateCallback);
     this.ticker.start();
-    
+
     this.garageController.initialize();
-    
+
     const appContext: AppContext = {
       handleSetPage: this.pagesController.setPage.bind(this.pagesController),
       handleCreateCar: this.garageController.createCar.bind(this.garageController),
