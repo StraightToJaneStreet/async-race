@@ -22,6 +22,7 @@ const Main = (props: StateProps) => {
 
   return (
     <div className="application">
+      <div className="application__wip-header">I need 1 more day.</div>
       <div className="application__heading">
         <Button handleClick={() => handleSetPage(Page.Garage)} label='To garage'/>
         <Button handleClick={() => handleSetPage(Page.Winners)} label='To winners'/>
