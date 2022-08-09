@@ -2,10 +2,15 @@ import React from 'react';
 
 interface CarComponentProps {
   color: string;
+  trackProgress: number;
 }
-export default function Car({ color }: CarComponentProps) {
+
+export default function Car({ color, trackProgress: shift }: CarComponentProps) {
   return (
-    <div className="car">
+    <div
+      className="car"      
+      style={({ transform: `translate3d(${shift}%, 0, 0)` })}
+      >
       <svg
         width="100"
         height="60"
