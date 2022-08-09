@@ -13,7 +13,7 @@ export default function Car({ color, trackProgress: shift }: CarComponentProps) 
       >
       <svg
         width="100"
-        height="60"
+        height="50"
         viewBox="0 0 52.916667 31.75"
         version="1.1"
         id="svg5"

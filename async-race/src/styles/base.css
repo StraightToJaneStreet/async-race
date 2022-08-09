@@ -2,19 +2,43 @@ body {
   margin: 5px;
 }
 
+.application {
+  max-width: 768px;
+  margin: 0 auto;
+}
+
+.application__heading {  
+  display: flex;
+  gap: 10px;
+
+  margin-bottom: 10px;
+}
+
 .button {
   text-transform: uppercase;
   font-weight: bold;
-  margin: 5px;
+  height: 27px;
 }
 
-.configurator {
-  margin-bottom: 20px;
+.button--small {
+  padding: 2px;
+  height: 24px;
+}
+
+.configurator {  
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-bottom: 10px;
+}
+
+.configurator__name {
+  height: 20px;
 }
 
 .track {
-  border: 1px solid black;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
 }
 
 .track__header {
@@ -25,8 +49,13 @@ body {
   gap: 5px;
 }
 
+.track__content {
+  display: flex;
+}
+
 .track__road {
   box-sizing: border-box;
+  flex: 0 0 100%;
   padding-top: 5px;
   padding-right: 100px;
   background-color: lightgray;
@@ -46,30 +75,16 @@ body {
 }
 
 .engine-status {
-  border-radius: 3px;
   display: flex;
-  align-items: center;
-  gap: 5px;
+  flex-direction: column;
 }
 
-.engine-status__state {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  border: 1px solid black;
-  border-radius: 50%;
+.engine-status__start {
+  flex: 0 0 50%;
 }
 
-.engine-status__state--start {
-  background-color: green;
-}
-
-.engine-status__state--running {
-  background-color: yellow;
-}
-
-.engine-status__state--finished {
-  background-color: red;
+.engine-status__stop {
+  flex: 0 0 50%;
 }
 
 .engine-status__broken {
@@ -81,4 +96,21 @@ body {
   justify-content: center;
   align-items: center;
   border-radius: 2px;
+}
+
+.garage__buttons {
+  display: flex;
+  gap: 10px;
+
+  margin-bottom: 10px;
+}
+
+.garage__cars-counter {
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.garage__page-number {
+  margin: 0;
+  margin-bottom: 10px;
 }

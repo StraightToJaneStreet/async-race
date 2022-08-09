@@ -1,11 +1,36 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { useSelector } from 'react-redux';
+import { selectTrack } from '../../model/feature/tracks';
+import { storeSelectTracks } from '../../model/store';
+import AppContext from '../AppContext';
 
-function EngineStatus() {
+interface EngineStatusProps {
+  carId: number;
+}
+function EngineStatus({ carId }: EngineStatusProps) {
+  const state = useSelector(storeSelectTracks);
+  const trackParams = selectTrack(state, carId);
+
+  const {
+    handleCarStart,
+    handleCarReset
+  } = useContext(AppContext);
+  if (trackParams === undefined) {
+
+  }
   return (
-    <span className='engine-status'>
-      <span className='engine-status__state engine-status__state--start'></span>
-      <span className='engine-status__broken'>B</span>
-    </span>
+    <div className='engine-status'>
+      <button
+        className='engine-status__start'
+        onClick={() => handleCarStart(carId)}>
+          A
+      </button>
+      <button
+        className='engine-status__stop'
+        onClick={() => handleCarReset(carId)}>
+          R
+      </button>
+    </div>
   )
 }
 

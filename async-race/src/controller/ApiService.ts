@@ -26,14 +26,15 @@ const createURI = (protocol: Protocol, host: string, path: string) => {
   return `${protocol}://${host}/${path}`;
 }
 
-interface StartEngineParams {
-  id: string,
-  status: 'started' | 'stopped'
+enum EngineMode {
+  Started = 'started',
+  Drive = 'drive',
+  Stopped = 'stopped',
 }
 
-interface SetDriveModeParams {
-  id: string;
-  status: 'drive';
+interface EngineControlParams {
+  id: string,
+  status: EngineMode
 }
 
 interface QueryParams {
@@ -46,7 +47,7 @@ const createURIWithQueryParams = (
   protocol: Protocol,
   host: string,
   path: string,
-  params: QueryParams | StartEngineParams | SetDriveModeParams
+  params: QueryParams | EngineControlParams
 ) => {
   const baseEndpoint = createURI(protocol, host, path);
   const queryParamsSuffix = Object.entries(params)
@@ -109,17 +110,32 @@ export default class ApiService {
   }
 
   startEngine(carId: number): Promise<StartEngineResponseBody> {
-    const params: StartEngineParams = {
+    const params: EngineControlParams = {
       id: `${carId}`,
-      status: 'started'
+      status: EngineMode.Started
     }
 
     const endpoint = createURIWithQueryParams(this.protocol, this.address, this.pointEngine, params);
 
-    const result = fetch(endpoint, { method: HTTPMethod.PATCH })
+    const result = fetch(endpoint, {
+      method: HTTPMethod.PATCH,
+    })
       .then((response) => response.json() as Promise<StartEngineResponseBody>);
 
     return result;
+  }
+
+  stopEngine(carId: number) {
+    const params: EngineControlParams = {      
+      id: `${carId}`,
+      status: EngineMode.Stopped
+    };
+
+    const endpoint = createURIWithQueryParams(this.protocol, this.address, this.pointEngine, params);
+
+    return fetch(endpoint, {
+      method: HTTPMethod.PATCH      
+    });
   }
 
   loadCars(): Promise<Car[]> {
@@ -131,10 +147,11 @@ export default class ApiService {
   }
 
   setEngineDriveMode(carId: number): Promise<boolean> {
-    const params: SetDriveModeParams =  {
+    const params: EngineControlParams =  {
       id: `${carId}`,
-      status: 'drive'
+      status: EngineMode.Drive
     }
+    
     const endpoint = createURIWithQueryParams(this.protocol, this.address, this.pointEngine, params);
 
     return fetch(endpoint, { method: HTTPMethod.PATCH })

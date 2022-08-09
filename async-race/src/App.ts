@@ -38,9 +38,10 @@ export default class App {
       handleCreateCar: this.garageController.createCar.bind(this.garageController),
       handleGenerateCars: this.garageController.generateCars.bind(this.garageController),
 
+      handleCarStart: this.racingService.startCar.bind(this.racingService),
+      handleCarReset: this.racingService.stopCarEngine.bind(this.racingService),
       handleCarRemove: this.garageController.removeCar.bind(this.garageController),
 
-      handleCarStart: this.racingService.startCar.bind(this.racingService),
       handleRaceStart: this.racingService.startRace.bind(this.racingService),
 
       handleReset: () => {},

@@ -6,6 +6,7 @@ export type AppContext = {
   handleCreateCar: (name: string, color: string) => void,
 
   handleCarStart: (carId: number) => void,
+  handleCarReset: (carId: number) => void,
   handleCarRemove: (carId: number) => void,
 
   handleUpdateCar: () => void,
@@ -19,6 +20,7 @@ export default createContext<AppContext>({
   handleCreateCar: (_name, _color) => {},
 
   handleCarStart: (_carId: number) => {},
+  handleCarReset: (_carId: number) => {},
   handleCarRemove: (_carId: number) => {},
 
   handleUpdateCar: () => {},

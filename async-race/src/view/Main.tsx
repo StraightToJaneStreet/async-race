@@ -22,8 +22,10 @@ const Main = (props: StateProps) => {
 
   return (
     <div className="application">
-      <Button handleClick={() => handleSetPage(Page.Garage)} label='To garage'/>
-      <Button handleClick={() => handleSetPage(Page.Winners)} label='To winners'/>
+      <div className="application__heading">
+        <Button handleClick={() => handleSetPage(Page.Garage)} label='To garage'/>
+        <Button handleClick={() => handleSetPage(Page.Winners)} label='To winners'/>
+      </div>
       {
         props.currentPage === Page.Garage
         ? <Garage/>

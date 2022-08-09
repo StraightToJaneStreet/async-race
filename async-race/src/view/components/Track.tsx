@@ -27,20 +27,25 @@ const Track = ({ car }: TrackProps) => {
   return (
     <div className="track">
       <div className="track__header">        
-        <Button handleClick={() => handleCarStart(car.id)} label='Start'/>
-        <Button handleClick={() => handleCarStart(car.id)} label='Select'/>
-        <Button handleClick={() => handleCarRemove(car.id)} label='Remove'/>        
-      </div>
-      <div className="track__header">
-        <EngineStatus/>
+        <Button
+          label='Select'
+          small
+          handleClick={() => handleCarStart(car.id)}/>
+        <Button
+          label='Remove'
+          small
+          handleClick={() => handleCarRemove(car.id)}/>        
         <span className='track__car-name'>{car.name}</span>
       </div>
-      <div className="track__road">
-        <CarComponent
-          color={car.color}
-          trackProgress={trackProgress}
-          />
+      <div className="track__content">
+        <EngineStatus carId={car.id}/>
+        <div className="track__road">
+          <CarComponent
+            color={car.color}
+            trackProgress={trackProgress}/>
+        </div>
       </div>
+      
     </div>
   )
 }

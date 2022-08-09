@@ -1,6 +1,7 @@
 import {
   actionBrokeCarOnTrack,
   actionInitializeTrack,
+  actionResetTrack,
   actionTrackFinished,
   TrackInitializationParams
 } from "../model/feature/tracks";
@@ -66,6 +67,15 @@ export default class RacingService {
       })
     })
     .then((winnerId) => { console.log('Winner: ', winnerId)});
+  }
+
+  stopCarEngine(carId: number) {
+    const api = ApiService.getInstance();
+    api
+      .stopEngine(carId)
+      .then(() => {
+        store.dispatch(actionResetTrack(carId));
+      })
   }
 
   static getInstance(): RacingService {
