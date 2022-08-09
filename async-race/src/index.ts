@@ -1,4 +1,4 @@
-import './styles/base.scss';
+import './styles/base.css';
 import App from './App';
 
 const appRoot = document.createElement('div');
