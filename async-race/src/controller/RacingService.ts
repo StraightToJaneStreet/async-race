@@ -10,7 +10,7 @@ import store from "../model/store";
 import ApiService from "./ApiService";
 
 export default class RacingService {
-  protected static instance: RacingService | null;
+  protected static instance: RacingService | null = null;
 
   protected constructor() { }
 
