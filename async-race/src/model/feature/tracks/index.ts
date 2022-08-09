@@ -26,9 +26,18 @@ export type TrackStateParams = RunningStateParams | BrokenStateParams | Finished
 
 export interface TrackParams {
   stateParams: TrackStateParams;
+  completedTrackPercent: number;
   carId: number;
   distance: number;
 }
+
+interface RunningTrackParams {
+  stateParams: RunningStateParams;
+  completedTrackPercent: number;
+  carId: number;
+  distance: number;
+}
+
 
 export interface TrackInitializationParams {
   carId: number;
@@ -66,6 +75,7 @@ export const actionInitializeTrack = factory<TrackInitializationParams, 'initial
 export const actionResetTrack = factory<number, 'removeItem'>('removeItem');
 export const actionBrokeCarOnTrack = factory<number, 'brokeCarOnTrack'>('brokeCarOnTrack');
 export const actionTrackFinished = factory<number, 'trackFinished'>('trackFinished');
+export const actionUpdateProgress = factory<void, 'updateProgress'>('updateProgress');
 
 const initialState = adapter.getInitialState();
 
@@ -78,6 +88,7 @@ const reducer = createReducer(initialState, (builder) => {
 
       const track: TrackParams = {
         stateParams: createRunningStateParams(velocity, currentTimestamp),
+        completedTrackPercent: 0,
         carId,
         distance
       }
@@ -120,6 +131,34 @@ const reducer = createReducer(initialState, (builder) => {
       
       adapter.updateOne(state, update);
     })
+
+    .addCase(actionUpdateProgress, (state) => {
+      
+      const tracks = adapter.getSelectors().selectAll(state);
+      
+      const updates = tracks
+        .filter(isRunning)
+        .map((track) => {
+          const expectedTime = track.distance / track.stateParams.velocity;
+          const actualTime = performance.now() - track.stateParams.startTimestamp;
+          const percentage =
+            actualTime >= expectedTime ? 100
+            : actualTime === 0
+              ? 0
+              : actualTime / expectedTime * 100;          
+          const changes: Partial<TrackParams> = {
+            completedTrackPercent: percentage
+          }
+          const udpate: Update<TrackParams> = {
+            id: track.carId,
+            changes
+          }          
+          return udpate;
+        });
+      adapter.updateMany(state, updates);
+    })
 });
+
+const isRunning = (track: TrackParams): track is RunningTrackParams => track.stateParams.state === TrackStateVariants.Running;
 
 export default reducer;
