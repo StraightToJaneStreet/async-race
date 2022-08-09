@@ -28,8 +28,21 @@ body {
 .track__road {
   box-sizing: border-box;
   padding-top: 5px;
-  border-right: 100px solid lightgreen;
+  padding-right: 100px;
   background-color: lightgray;
+  overflow-x: hidden;
+  position: relative;
+}
+
+.track__road::before {
+  content: "";
+  right: 0px;
+  top: 0;
+  background-color: green;
+  display: block;
+  position: absolute;
+  width: 100px;
+  height: 100%;
 }
 
 .engine-status {
