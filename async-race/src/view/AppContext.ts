@@ -9,7 +9,7 @@ export type AppContext = {
   handleCarRemove: (carId: number) => void,
 
   handleUpdateCar: () => void,
-  handleRaceStart: () => void,
+  handleRaceStart: (carIds: number[]) => void,
   handleGenerateCars: () => void,
   handleReset: () => void
 }
@@ -22,7 +22,7 @@ export default createContext<AppContext>({
   handleCarRemove: (_carId: number) => {},
 
   handleUpdateCar: () => {},
-  handleRaceStart: () => {},
+  handleRaceStart: (_carIds: number[]) => {},
   handleGenerateCars: () => {},
   handleReset: () => {}
 });

@@ -33,7 +33,7 @@ function GaragePage({ page, cars }: GaragePageProps) {
   const leftPaginationBorder = page * CARS_PER_PAGE;
   const rightPaginationBorder = leftPaginationBorder + CARS_PER_PAGE;
 
-  const carsForDisplay = cars.slice(
+  const carsOnPage = cars.slice(
     leftPaginationBorder,
     rightPaginationBorder
   );
@@ -51,14 +51,14 @@ function GaragePage({ page, cars }: GaragePageProps) {
       <CreateCar/>
       <UpdateCar/>
       <div className="garage__buttons">
-        <Button handleClick={handleRaceStart} label='Race'/>
+        <Button handleClick={() => handleRaceStart(carsOnPage.map((car) => car.id))} label='Race'/>
         <Button handleClick={handleReset} label='Reset'/>
         <Button handleClick={handleGenerateCars} label='Generate cars'/>
       </div>
       <h2 className="garage__cars-counter">Garage ({cars.length})</h2>
       <h3 className="garage__page-number">Page #{page + 1}</h3>
       <div className="garage__cars">
-        <TrackList cars={carsForDisplay}/>
+        <TrackList cars={carsOnPage}/>
       </div>
       <div className="garage__navigation">
         <Button

@@ -130,7 +130,7 @@ export default class ApiService {
       .then((cars: LoadCarsResponse) => cars);
   }
 
-  setEngineDriveMode(carId: number) {
+  setEngineDriveMode(carId: number): Promise<boolean> {
     const params: SetDriveModeParams =  {
       id: `${carId}`,
       status: 'drive'
@@ -138,6 +138,7 @@ export default class ApiService {
     const endpoint = createURIWithQueryParams(this.protocol, this.address, this.pointEngine, params);
 
     return fetch(endpoint, { method: HTTPMethod.PATCH })
+      .then((response) => response.ok);
   }
 
 }
