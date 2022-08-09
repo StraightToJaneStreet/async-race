@@ -1,4 +1,4 @@
-import { combineReducers, configureStore, createSelector } from '@reduxjs/toolkit';
+import { combineReducers, configureStore } from '@reduxjs/toolkit';
 
 import pageReducer from './feature/pages/slice';
 import garageReducer from './feature/garage/slice';
