@@ -8,7 +8,9 @@ body {
 }
 
 .application__wip-header {
-  font-size: large;
+  font-size: 32px;
+  font-weight: bold;
+
   text-align: center;
 }
 
