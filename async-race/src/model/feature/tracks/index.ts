@@ -73,6 +73,7 @@ const factory = createActionCreatorFactory<'tracks'>('tracks');
 
 export const actionInitializeTrack = factory<TrackInitializationParams, 'initializeTrack'>('initializeTrack');
 export const actionResetTrack = factory<number, 'removeItem'>('removeItem');
+export const actionResetAllTracks = factory<void, 'resetAllTracks'>('resetAllTracks');
 export const actionBrokeCarOnTrack = factory<number, 'brokeCarOnTrack'>('brokeCarOnTrack');
 export const actionTrackFinished = factory<number, 'trackFinished'>('trackFinished');
 export const actionUpdateProgress = factory<void, 'updateProgress'>('updateProgress');
@@ -98,6 +99,10 @@ const reducer = createReducer(initialState, (builder) => {
 
     .addCase(actionResetTrack, (state, { payload }) => {
       adapter.removeOne(state, payload);      
+    })
+
+    .addCase(actionResetAllTracks, (state) => {
+      adapter.removeAll(state);
     })
 
     .addCase(actionBrokeCarOnTrack, (state, { payload }) => {

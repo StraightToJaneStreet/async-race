@@ -12,6 +12,15 @@ import ApiService from "./ApiService";
 export default class RacingService {
   protected static instance: RacingService | null;
 
+  protected constructor() { }
+
+  static getInstance(): RacingService {
+    if (RacingService.instance === null) {
+      RacingService.instance = new RacingService();
+    }
+    return RacingService.instance;
+  }
+
   protected createTrackPromise(carId: number): Promise<number> {
     const api = ApiService.getInstance();
 
@@ -69,6 +78,10 @@ export default class RacingService {
     .then((winnerId) => { console.log('Winner: ', winnerId)});
   }
 
+  resetRace(carIds: number[]) {
+
+  }
+
   stopCarEngine(carId: number) {
     const api = ApiService.getInstance();
     api
@@ -78,10 +91,4 @@ export default class RacingService {
       })
   }
 
-  static getInstance(): RacingService {
-    if (RacingService.instance === null) {
-      RacingService.instance = new RacingService();
-    }
-    return RacingService.instance;
-  }
 }

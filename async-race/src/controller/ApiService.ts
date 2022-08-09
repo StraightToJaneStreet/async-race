@@ -151,7 +151,7 @@ export default class ApiService {
       id: `${carId}`,
       status: EngineMode.Drive
     }
-    
+
     const endpoint = createURIWithQueryParams(this.protocol, this.address, this.pointEngine, params);
 
     return fetch(endpoint, { method: HTTPMethod.PATCH })
