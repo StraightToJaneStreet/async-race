@@ -17,7 +17,6 @@ export const actionDecrementPage = actionFactory<void, 'decrementPage'>('decreme
 export const actionSetOrderingType = actionFactory<OrderingType, 'setOrderingType'>('setOrderingType');
 export const actionSetOrderingField = actionFactory<OrderingField, 'setOrderingField'>('setOrderingField');
 
-
 const initialState: WinnersTableParamsState = {
   page: 1,
   orderingField: 'wins',

@@ -58,7 +58,7 @@ export const serviceAPI = createApi({
   tagTypes: ['Car', 'Winner'],
 
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:3000'
+    baseUrl: 'http://localhost:3000',
   }),
 
   endpoints: (build) => ({
