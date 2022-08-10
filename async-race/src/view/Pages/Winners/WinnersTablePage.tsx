@@ -33,7 +33,7 @@ export default function WinnersPage(props: WinnersTablePageProps) {
           (winner, position) =>
             <WinnersTableRow
               key={winner.id}
-              position={position + positionShift}
+              position={position + positionShift + 1}
               winner={winner}/>
         )}
       </>
