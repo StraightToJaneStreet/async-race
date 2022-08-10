@@ -3,7 +3,7 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import pageReducer from './feature/pages/slice';
 import createCarRedcuer from './feature/createCar';
 import updateCarReducer from './feature/updateCar';
-import garagePageReducer from './feature/garagePages';
+import garagePageParamsReducer from './feature/garagePageProperties';
 import tracksReducer from './feature/tracks';
 import winnersTableParamsReducer from './feature/winnersTableParams';
 
@@ -14,7 +14,7 @@ const store = configureStore({
     pages: pageReducer,
     createCar: createCarRedcuer,
     updateCar: updateCarReducer,
-    garagePage: garagePageReducer,
+    garagePageParams: garagePageParamsReducer,
     tracks: tracksReducer,
     winnersPageParams: winnersTableParamsReducer,
     [serviceAPI.reducerPath]: serviceAPI.reducer,
@@ -35,8 +35,8 @@ export const storeSelectCreateCar = (state: RootState): ReturnType<typeof create
 export const storeSelectUpdateCar = (state: RootState): ReturnType<typeof updateCarReducer> =>
   state.updateCar;
 
-export const storeSelectGaragePage = (state: RootState): ReturnType<typeof garagePageReducer> =>
-  state.garagePage;
+export const storeSelectGaragePage = (state: RootState): ReturnType<typeof garagePageParamsReducer> =>
+  state.garagePageParams;
 
 export const storeSelectTracks = (state: RootState): ReturnType<typeof tracksReducer> =>
   state.tracks;

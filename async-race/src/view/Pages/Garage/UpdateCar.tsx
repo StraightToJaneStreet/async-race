@@ -1,11 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { RootState } from "../../../model/store";
+import { RootState, storeSelectGaragePage } from "../../../model/store";
 
 import Button from '../../components/Button';
 import CarConfiguration from '../../components/CarConfiguration';
 import { actionSetName, actionSetColor } from '../../../model/feature/updateCar';
 import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+import CarServiceContext from '../../CarServiceContext';
 
 interface UpdateCarProps {
   color: string;
@@ -20,15 +22,23 @@ const mapToState = (state: RootState): UpdateCarProps => {
 }
 
 function UpdateCar({ name, color }: UpdateCarProps) {
+  const { carIdForUpdate } = useSelector(storeSelectGaragePage);
+
+  const { updateCar } = useContext(CarServiceContext);
+
   const dispatch = useDispatch();
 
   return (
     <div className="configurator configurator__update">
       <CarConfiguration
         name={name} color={color}
+        enabled={carIdForUpdate !== null}
         updateName={(value) => dispatch(actionSetName(value))}
         updateColor={(value) => dispatch(actionSetColor(value))}/>
-      <Button handleClick={() => {}} label='Update'/>
+      <Button
+        label='Update'
+        enabled={carIdForUpdate !== null}
+        handleClick={() => updateCar({ color, name })} />
     </div>
   );
 }

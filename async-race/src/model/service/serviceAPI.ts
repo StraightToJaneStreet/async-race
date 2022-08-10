@@ -20,6 +20,12 @@ export interface CarReadParams {
   id: number;
 }
 
+export interface CarUpdatingParams {
+  id: number;
+  color: string;
+  name: string;
+}
+
 export interface WinnerCreationParams {
   id: number;
   time: number;
@@ -101,6 +107,18 @@ export const serviceAPI = createApi({
       query: ({ id }) => ({
         url: `garage/${id}`,
         method: 'DELETE',
+      })
+    }),
+
+    updateCar: build.mutation<Car, CarUpdatingParams>({
+      invalidatesTags: ['Car'],
+      query: ({ id, ...rest }) => ({
+        url: `garage/${id}`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(rest)
       })
     }),
 

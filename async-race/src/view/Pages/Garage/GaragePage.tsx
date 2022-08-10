@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 
 import { Car } from '../../../core/Car';
 
-import { actionDecrementPage, actionIncrementPage } from '../../../model/feature/garagePages';
+import { actionDecrementPage, actionIncrementPage } from '../../../model/feature/garagePageProperties';
 import { RootState, storeSelectTracks } from '../../../model/store';
 
 import Button from '../../components/Button';
@@ -24,7 +24,7 @@ interface GaragePageProps {
 
 const mapToState = (state: RootState): GaragePageProps => {
   return {
-    page: state.garagePage.currentPage,
+    page: state.garagePageParams.currentPage,
   };
 }
 

@@ -6,7 +6,6 @@ import { selectTrack } from '../../model/feature/tracks';
 import { storeSelectTracks } from '../../model/store';
 
 import CarServiceContext from '../CarServiceContext';
-import RacingServiceContext from '../RacingServiceContext';
 
 import Button from './Button';
 import CarComponent from './Car';
@@ -18,8 +17,10 @@ interface TrackProps {
 
 const Track = ({ car }: TrackProps) => {
 
-  const { deleteCar } = useContext(CarServiceContext);
-  const { startCar } = useContext(RacingServiceContext);
+  const {
+    deleteCar,
+    selectCarForUpdate
+  } = useContext(CarServiceContext);
 
   const state = useSelector(storeSelectTracks);
   const trackParams = selectTrack(state, car.id);
@@ -32,7 +33,7 @@ const Track = ({ car }: TrackProps) => {
         <Button
           label='Select'
           small
-          handleClick={() => startCar(car.id)}/>
+          handleClick={() => selectCarForUpdate(car.id)}/>
         <Button
           label='Remove'
           small
