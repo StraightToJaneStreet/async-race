@@ -5,7 +5,7 @@ import { Car } from '../../../core/Car';
 import { selectCars } from '../../../model/feature/garage/slice';
 
 import { actionDecrementPage, actionIncrementPage } from '../../../model/feature/garagePages';
-import { RootState } from '../../../model/store';
+import { RootState, storeSelectTracks } from '../../../model/store';
 
 import Button from '../../components/Button';
 import CreateCar from './CreateCar';
@@ -14,6 +14,8 @@ import TrackList from '../../components/TrackList';
 
 import serviceAPI from '../../../model/service/serviceAPI';
 import RacingServiceContext from '../../RacingServiceContext';
+import { selectllTracks } from '../../../model/feature/tracks';
+import { useSelector } from 'react-redux';
 
 interface GaragePageProps {
   page: number;
@@ -45,14 +47,30 @@ function GaragePage({ page }: GaragePageProps) {
   const carsOnPage: Car[] = carsState === undefined ? [] : carsState.items;
   const totalCount: number = carsState === undefined ? 0 : carsState.total;
 
+  const idsOnPage = carsOnPage.map((car) => car.id);
+
+  const state = useSelector(storeSelectTracks);
+  const tracks = selectllTracks(state);
+
+  const tracksOnPage = tracks.filter((track) => idsOnPage.includes(track.carId));
+  const pageHasActiveTracks = tracksOnPage.length > 0;
+
   return (
     <div className="garage__page">
       <CreateCar/>
       <UpdateCar/>
       <div className="garage__buttons">
-        <Button handleClick={() => startRaceFor(carsOnPage.map((car) => car.id))} label='Race'/>
-        <Button handleClick={() => resetRaceFor(carsOnPage.map((car) => car.id))} label='Reset'/>
-        <Button handleClick={() => {}} label='Generate cars'/>
+        <Button
+          label='Race'
+          enabled={!pageHasActiveTracks}
+          handleClick={() => startRaceFor(idsOnPage)} />
+        <Button
+          label='Reset'
+          enabled={pageHasActiveTracks}
+          handleClick={() => resetRaceFor(idsOnPage)} />
+        <Button
+          label='Generate cars'
+          handleClick={() => {}} />
       </div>
       <h2 className="garage__cars-counter">Garage ({totalCount})</h2>
       <h3 className="garage__page-number">Page #{page}</h3>
