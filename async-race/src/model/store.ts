@@ -6,16 +6,21 @@ import createCarRedcuer from './feature/createCar';
 import updateCarReducer from './feature/updateCar';
 import garagePageReducer from './feature/garagePages';
 import tracksReducer from './feature/tracks';
+import serviceAPI from './service/serviceAPI';
 
 const store = configureStore({
   reducer: combineReducers({
     pages: pageReducer,
     garage: garageReducer,
+    [serviceAPI.reducerPath]: serviceAPI.reducer,
     createCar: createCarRedcuer,
     updateCar: updateCarReducer,
     garagePage: garagePageReducer,
     tracks: tracksReducer,
-  })
+  }),
+  middleware: (getDefaultMiddleware) => 
+    getDefaultMiddleware().concat(serviceAPI.middleware)
+  
 });
 
 export type RootState = ReturnType<typeof store.getState>;

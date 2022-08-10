@@ -4,7 +4,10 @@ import { useSelector } from 'react-redux';
 import { Car } from '../../core/Car';
 import { selectTrack } from '../../model/feature/tracks';
 import { storeSelectTracks } from '../../model/store';
+
 import AppContext from '../AppContext';
+import CarServiceContext from '../CarServiceContext';
+
 import Button from './Button';
 import CarComponent from './Car';
 import EngineStatus from './EngineStatus';
@@ -14,16 +17,15 @@ interface TrackProps {
 }
 
 const Track = ({ car }: TrackProps) => {
-  const {
-    handleCarStart,
-    handleCarRemove
-  } = useContext(AppContext);
+
+  const { deleteCar } = useContext(CarServiceContext);
+  const { handleCarStart } = useContext(AppContext);
 
   const state = useSelector(storeSelectTracks);
   const trackParams = selectTrack(state, car.id);
 
   const trackProgress = trackParams?.completedTrackPercent ?? 0;
-
+  
   return (
     <div className="track">
       <div className="track__header">        
@@ -34,7 +36,7 @@ const Track = ({ car }: TrackProps) => {
         <Button
           label='Remove'
           small
-          handleClick={() => handleCarRemove(car.id)}/>        
+          handleClick={() => deleteCar({ id: car.id })}/>        
         <span className='track__car-name'>{car.name}</span>
       </div>
       <div className="track__content">

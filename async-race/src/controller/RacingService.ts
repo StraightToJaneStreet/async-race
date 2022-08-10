@@ -75,7 +75,10 @@ export default class RacingService {
         })
       })
     })
-    .then((winnerId) => { console.log('Winner: ', winnerId)});
+    .then((_winnerId) => {
+      
+    })
+    .catch(() => { });
   }
 
   resetRace(_carIds: number[]) {

@@ -5,8 +5,8 @@ export type GarageState = EntityState<Car>;
 
 const carAdapter = createEntityAdapter<Car>({
   selectId: (car) => car.id,
+});
 
-})
 const initialState = carAdapter.getInitialState();
 
 const slice = createSlice({

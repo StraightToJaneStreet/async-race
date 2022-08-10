@@ -9,7 +9,7 @@ interface GaragePagesState {
 }
 
 const initialState: GaragePagesState = {
-  currentPage: 0
+  currentPage: 1
 }
 
 export const actionIncrementPage = actionFactory<void, 'incrementPage'>('incrementPage');
@@ -21,7 +21,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.currentPage += 1;
     })
     .addCase(actionDecrementPage, (state, _action) => {
-      if (state.currentPage > 0) {
+      if (state.currentPage > 1) {
         state.currentPage -= 1;
       }
     })

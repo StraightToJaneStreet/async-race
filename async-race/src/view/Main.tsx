@@ -19,7 +19,7 @@ const mapState = (state: RootState): StateProps => ({ currentPage: state.pages.v
 const Main = (props: StateProps) => {
   const context = useContext(Context);
   const { handleSetPage } = context;
-
+  
   return (
     <div className="application">
       <div className="application__wip-header">I need 1 more day.</div>

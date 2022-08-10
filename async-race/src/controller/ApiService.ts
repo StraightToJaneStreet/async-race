@@ -1,29 +1,23 @@
-import { Car } from "../core/Car";
+const DEFAULT_API_ADDRESS = 'localhost';
+const DEFAULT_API_PORT = '3000';
 
 enum HTTPMethod {
   GET = 'GET',
   POST = 'POST',
   PATCH = 'PATCH',
   DELETE = 'DELETE',
+  PUT = 'PUT',
 }
 
-interface CreateCarResponseBody {
-  name: string;
-  color: string;
-  id: number;
-}
+enum Protocol {
+  HTTP = 'http',
+  HTTPS = 'https'
+};
 
-interface StartEngineResponseBody {
-  velocity: number;
-  distance: number;
-}
-
-type LoadCarsResponse = Car[];
-
-type Protocol = 'http' | 'https';
-
-const createURI = (protocol: Protocol, host: string, path: string) => {
-  return `${protocol}://${host}/${path}`;
+enum Endpoints {
+  Garage = 'garage',
+  Engine = 'engine',
+  Winners = 'winners'
 }
 
 enum EngineMode {
@@ -32,22 +26,45 @@ enum EngineMode {
   Stopped = 'stopped',
 }
 
+interface CarParams {
+  name: string;
+  color: string;
+}
+
+interface CarResponseBody extends CarParams {
+  id: number;
+}
+
+interface StartEngineResponseBody {
+  velocity: number;
+  distance: number;
+}
+
+interface WinnerParams {
+  wins: number;
+  time: number;
+}
+
+interface WinnerResponseParams extends WinnerParams {
+  id: number;
+}
+
 interface EngineControlParams {
   id: string,
   status: EngineMode
 }
 
-interface QueryParams {
-  [k: string]: string;
-}
-
 const QUERY_PARAMS_DELIMITER = '&';
+
+const createURI = (protocol: Protocol, host: string, path: string) => {
+  return `${protocol}://${host}/${path}`;
+}
 
 const createURIWithQueryParams = (
   protocol: Protocol,
   host: string,
   path: string,
-  params: QueryParams | EngineControlParams
+  params: WinnerParams | EngineControlParams
 ) => {
   const baseEndpoint = createURI(protocol, host, path);
   const queryParamsSuffix = Object.entries(params)
@@ -58,16 +75,12 @@ const createURIWithQueryParams = (
 }
 
 export default class ApiService {
-  protocol: Protocol = 'http';
-  address = 'localhost:3000';
+  protocol: Protocol = Protocol.HTTP;
+  address = `${DEFAULT_API_ADDRESS}:${DEFAULT_API_PORT}`;
 
-  pointGarage = 'garage';
-  pointWinners = 'winners';
-  pointEngine = 'engine';
+  protected static instance: ApiService | null = null;
 
-  static instance: ApiService | null = null;
-
-  private constructor() { }
+  protected constructor() { }
 
   static getInstance() {
     if (ApiService.instance === null) {
@@ -77,7 +90,7 @@ export default class ApiService {
   }
 
   createCar(name: string, color: string): Promise<number> {
-    const endpoint = createURI(this.protocol, this.address, this.pointGarage);
+    const endpoint = createURI(this.protocol, this.address, Endpoints.Garage);
 
     const data = new FormData();
     data.set('name', name);
@@ -94,14 +107,14 @@ export default class ApiService {
     }
 
     const result = fetch(endpoint, options)
-      .then(response => response.json() as Promise<CreateCarResponseBody>)
+      .then(response => response.json() as Promise<CarResponseBody>)
       .then((body) =>body.id);
 
     return result;
   }
 
   removeCar(carId: number) {
-    const pointWithId = `${this.pointGarage}/${carId}`;
+    const pointWithId = `${Endpoints.Garage}/${carId}`;
     const endpoint = createURI(this.protocol, this.address, pointWithId);
 
     return fetch(endpoint, {
@@ -115,7 +128,7 @@ export default class ApiService {
       status: EngineMode.Started
     }
 
-    const endpoint = createURIWithQueryParams(this.protocol, this.address, this.pointEngine, params);
+    const endpoint = createURIWithQueryParams(this.protocol, this.address, Endpoints.Engine, params);
 
     const result = fetch(endpoint, {
       method: HTTPMethod.PATCH,
@@ -131,19 +144,34 @@ export default class ApiService {
       status: EngineMode.Stopped
     };
 
-    const endpoint = createURIWithQueryParams(this.protocol, this.address, this.pointEngine, params);
+    const endpoint = createURIWithQueryParams(this.protocol, this.address, Endpoints.Engine, params);
 
     return fetch(endpoint, {
       method: HTTPMethod.PATCH      
     });
   }
 
-  loadCars(): Promise<Car[]> {
-    const endpoint = createURI(this.protocol, this.address, this.pointGarage);
+  loadCars(): Promise<CarResponseBody[]> {
+    const endpoint = createURI(this.protocol, this.address, Endpoints.Garage);
 
     return fetch(endpoint, { method: HTTPMethod.GET })
-      .then((response) => response.json())
-      .then((cars: LoadCarsResponse) => cars);
+      .then((response) => response.json());
+  }
+
+  loadWinners(): Promise<WinnerResponseParams[]> {
+    const endpoint = createURI(this.protocol, this.address, Endpoints.Garage);
+
+    return fetch(endpoint, { method: HTTPMethod.GET })
+      .then((response) => response.json());
+  }
+
+  updateWinner(id: number, params: WinnerParams) {
+    const path = `${Endpoints.Winners}/${id}`;
+    const endpoint = createURI(this.protocol, this.address, path);
+    return fetch(endpoint, {
+      method: HTTPMethod.PUT,
+      body: JSON.stringify(params)
+    })
   }
 
   setEngineDriveMode(carId: number): Promise<boolean> {
@@ -152,7 +180,7 @@ export default class ApiService {
       status: EngineMode.Drive
     }
 
-    const endpoint = createURIWithQueryParams(this.protocol, this.address, this.pointEngine, params);
+    const endpoint = createURIWithQueryParams(this.protocol, this.address, Endpoints.Engine, params);
 
     return fetch(endpoint, { method: HTTPMethod.PATCH })
       .then((response) => response.ok);
