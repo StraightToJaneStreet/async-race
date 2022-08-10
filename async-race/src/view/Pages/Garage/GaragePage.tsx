@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { useSelector } from 'react-redux';
 
 import { Car } from '../../../core/Car';
-import { selectCars } from '../../../model/feature/garage/slice';
 
 import { actionDecrementPage, actionIncrementPage } from '../../../model/feature/garagePages';
 import { RootState, storeSelectTracks } from '../../../model/store';
@@ -21,13 +20,11 @@ import CarServiceContext from '../../CarServiceContext';
 
 interface GaragePageProps {
   page: number;
-  cars: Car[];
 }
 
 const mapToState = (state: RootState): GaragePageProps => {
   return {
     page: state.garagePage.currentPage,
-    cars: selectCars(state.garage)
   };
 }
 
