@@ -1,4 +1,5 @@
 import { createReducer } from "@reduxjs/toolkit";
+import { MAXIMAL_CAR_NAME_LENGTH } from "../../../core/Contants";
 import { createActionCreatorFactory } from "../../utils";
 
 const PREFIX = 'createCarState';
@@ -28,6 +29,9 @@ const reducer = createReducer(initialState, (builder) => {
       return { ...payload };
     })
     .addCase(actionSetName, (state, { payload }) => {
+      if (payload.length > MAXIMAL_CAR_NAME_LENGTH) {
+        return;
+      }
       state.name = payload;
     })
     .addCase(actionSetColor, (state, { payload }) => {

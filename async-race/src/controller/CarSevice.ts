@@ -64,6 +64,14 @@ export default class CarService {
     if (garageParams.carIdForUpdate === params.id) {
       store.dispatch(actionRemoveCarForUpdate());
     }
+
+    const sub = store.dispatch(serviceAPI.endpoints.readWinner.initiate(params.id));
+    sub.then(({isSuccess}) => {
+      if (isSuccess === false) {
+        return;
+      }
+      store.dispatch(serviceAPI.endpoints.deleteWinner.initiate(params.id));
+    })
   }
 
   generateCars() {

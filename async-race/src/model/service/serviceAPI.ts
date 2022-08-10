@@ -170,6 +170,14 @@ export const serviceAPI = createApi({
       })
     }),
 
+    deleteWinner: build.mutation<void, number>({
+      invalidatesTags: ['Winner'],
+      query: (id) => ({
+        url: `winners/${id}`,
+        method: 'DELETE'
+      })
+    }),
+
     updateWinner: build.mutation<IWinner, WinnerUpdateParams>({
       invalidatesTags: ['Winner'],
       query: ({ id, ...rest }) => ({
