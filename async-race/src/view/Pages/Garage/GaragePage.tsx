@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
+
 import { Car } from '../../../core/Car';
 import { selectCars } from '../../../model/feature/garage/slice';
 
@@ -15,7 +17,7 @@ import TrackList from '../../components/TrackList';
 import serviceAPI from '../../../model/service/serviceAPI';
 import RacingServiceContext from '../../RacingServiceContext';
 import { selectllTracks } from '../../../model/feature/tracks';
-import { useSelector } from 'react-redux';
+import CarServiceContext from '../../CarServiceContext';
 
 interface GaragePageProps {
   page: number;
@@ -34,8 +36,10 @@ const CARS_PER_GARAGE_PAGE = 7;
 function GaragePage({ page }: GaragePageProps) {
   const {
     startRaceFor,
-    resetRaceFor
+    resetRaceFor,
   } = useContext(RacingServiceContext);
+
+  const { generateCars } = useContext(CarServiceContext);
 
   const dispatch = useDispatch();
 
@@ -70,7 +74,7 @@ function GaragePage({ page }: GaragePageProps) {
           handleClick={() => resetRaceFor(idsOnPage)} />
         <Button
           label='Generate cars'
-          handleClick={() => {}} />
+          handleClick={generateCars} />
       </div>
       <h2 className="garage__cars-counter">Garage ({totalCount})</h2>
       <h3 className="garage__page-number">Page #{page}</h3>
