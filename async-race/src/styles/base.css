@@ -121,3 +121,38 @@ body {
   margin: 0;
   margin-bottom: 10px;
 }
+
+.winners-table {
+
+}
+
+.winners-table__header {
+  display: flex;
+  gap: 5px;
+  background-color: gray;
+}
+
+.winners-table__header-column {
+  flex: 0 0 80px;
+
+  padding: 5px;
+}
+
+.winners-table__row {
+  display: flex;
+  align-items: center;
+}
+
+.winners-table__column {
+  flex: 0 0 80px;
+  gap: 5px;
+
+  max-width: 80px;
+  overflow: hidden;
+
+  padding: 5px;
+}
+
+.winners-table__column--car svg {
+  width: 60%;
+}

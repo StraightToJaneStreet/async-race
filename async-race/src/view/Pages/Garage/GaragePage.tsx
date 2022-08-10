@@ -7,14 +7,13 @@ import { selectCars } from '../../../model/feature/garage/slice';
 import { actionDecrementPage, actionIncrementPage } from '../../../model/feature/garagePages';
 import { RootState } from '../../../model/store';
 
-import AppContext from '../../AppContext';
-
 import Button from '../../components/Button';
 import CreateCar from './CreateCar';
 import UpdateCar from './UpdateCar';
 import TrackList from '../../components/TrackList';
 
 import serviceAPI from '../../../model/service/serviceAPI';
+import RacingServiceContext from '../../RacingServiceContext';
 
 interface GaragePageProps {
   page: number;
@@ -31,12 +30,10 @@ const mapToState = (state: RootState): GaragePageProps => {
 const CARS_PER_GARAGE_PAGE = 7;
 
 function GaragePage({ page }: GaragePageProps) {
-  const context = useContext(AppContext);
-
   const {
-    handleRaceStart,
-    handleReset
-  } = context;
+    startRaceFor,
+    resetRaceFor
+  } = useContext(RacingServiceContext);
 
   const dispatch = useDispatch();
 
@@ -45,7 +42,7 @@ function GaragePage({ page }: GaragePageProps) {
     itemsPerPage: CARS_PER_GARAGE_PAGE
   });
 
-  const carsOnPage: Car[] = carsState === undefined ? [] : carsState.cars;
+  const carsOnPage: Car[] = carsState === undefined ? [] : carsState.items;
   const totalCount: number = carsState === undefined ? 0 : carsState.total;
 
   return (
@@ -53,8 +50,8 @@ function GaragePage({ page }: GaragePageProps) {
       <CreateCar/>
       <UpdateCar/>
       <div className="garage__buttons">
-        <Button handleClick={() => handleRaceStart(carsOnPage.map((car) => car.id))} label='Race'/>
-        <Button handleClick={handleReset} label='Reset'/>
+        <Button handleClick={() => startRaceFor(carsOnPage.map((car) => car.id))} label='Race'/>
+        <Button handleClick={() => resetRaceFor(carsOnPage.map((car) => car.id))} label='Reset'/>
         <Button handleClick={() => {}} label='Generate cars'/>
       </div>
       <h2 className="garage__cars-counter">Garage ({totalCount})</h2>

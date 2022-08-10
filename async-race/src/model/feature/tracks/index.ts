@@ -54,6 +54,9 @@ const adapter = createEntityAdapter<TrackParams>({
 export const selectTrack = (state: TrackParamsState, carId: number): TrackParams | undefined =>
   adapter.getSelectors().selectById(state, carId);
 
+export const selectllTracks = (state: TrackParamsState): TrackParams[] =>
+  adapter.getSelectors().selectAll(state);
+
 const createRunningStateParams = (velocity: number, startTimestamp: number): RunningStateParams => ({
   state: TrackStateVariants.Running,
   velocity,
@@ -98,7 +101,7 @@ const reducer = createReducer(initialState, (builder) => {
     })
 
     .addCase(actionResetTrack, (state, { payload }) => {
-      adapter.removeOne(state, payload);      
+      adapter.removeOne(state, payload);
     })
 
     .addCase(actionResetAllTracks, (state) => {
@@ -109,7 +112,7 @@ const reducer = createReducer(initialState, (builder) => {
       const oldState = selectTrack(state, payload);
       if (oldState === undefined) {
         return;
-      }      
+      }
 
       const changes: Partial<TrackParams> = {
         stateParams: createBrokenStateParams()
@@ -133,14 +136,14 @@ const reducer = createReducer(initialState, (builder) => {
         stateParams: createFinishedStateParams(duration)
       }
       const update: Update<TrackParams> = { id: payload, changes };
-      
+
       adapter.updateOne(state, update);
     })
 
     .addCase(actionUpdateProgress, (state) => {
-      
+
       const tracks = adapter.getSelectors().selectAll(state);
-      
+
       const updates = tracks
         .filter(isRunning)
         .map((track) => {
@@ -150,14 +153,14 @@ const reducer = createReducer(initialState, (builder) => {
             actualTime >= expectedTime ? 100
             : actualTime === 0
               ? 0
-              : actualTime / expectedTime * 100;          
+              : actualTime / expectedTime * 100;
           const changes: Partial<TrackParams> = {
             completedTrackPercent: percentage
           }
           const udpate: Update<TrackParams> = {
             id: track.carId,
             changes
-          }          
+          }
           return udpate;
         });
       adapter.updateMany(state, updates);

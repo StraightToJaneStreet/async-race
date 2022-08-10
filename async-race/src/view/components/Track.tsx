@@ -5,8 +5,8 @@ import { Car } from '../../core/Car';
 import { selectTrack } from '../../model/feature/tracks';
 import { storeSelectTracks } from '../../model/store';
 
-import AppContext from '../AppContext';
 import CarServiceContext from '../CarServiceContext';
+import RacingServiceContext from '../RacingServiceContext';
 
 import Button from './Button';
 import CarComponent from './Car';
@@ -19,24 +19,24 @@ interface TrackProps {
 const Track = ({ car }: TrackProps) => {
 
   const { deleteCar } = useContext(CarServiceContext);
-  const { handleCarStart } = useContext(AppContext);
+  const { startCar } = useContext(RacingServiceContext);
 
   const state = useSelector(storeSelectTracks);
   const trackParams = selectTrack(state, car.id);
 
   const trackProgress = trackParams?.completedTrackPercent ?? 0;
-  
+
   return (
     <div className="track">
-      <div className="track__header">        
+      <div className="track__header">
         <Button
           label='Select'
           small
-          handleClick={() => handleCarStart(car.id)}/>
+          handleClick={() => startCar(car.id)}/>
         <Button
           label='Remove'
           small
-          handleClick={() => deleteCar({ id: car.id })}/>        
+          handleClick={() => deleteCar({ id: car.id })}/>
         <span className='track__car-name'>{car.name}</span>
       </div>
       <div className="track__content">
@@ -47,7 +47,7 @@ const Track = ({ car }: TrackProps) => {
             trackProgress={trackProgress}/>
         </div>
       </div>
-      
+
     </div>
   )
 }

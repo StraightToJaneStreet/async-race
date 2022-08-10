@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Car } from '../../core/Car';
+import { IWinner } from '../../core/IWinner';
 
-interface FetchCarsResponse {
+interface EntitySubsetWithTotal<T> {
   total: number;
-  cars: Car[];
+  items: T[];
 }
 
 export interface CarCreationParams {
@@ -15,6 +16,22 @@ export interface CarDeletingParams {
   id: number;
 }
 
+export interface CarReadParams {
+  id: number;
+}
+
+export interface WinnerCreationParams {
+  id: number;
+  time: number;
+  wins: number;
+}
+
+export interface WinnerUpdateParams {
+  id: number;
+  time: number;
+  wins: number;
+}
+
 interface CarIdResponse {
   id: number;
 }
@@ -23,6 +40,12 @@ interface PaginationParams {
   page: number;
   itemsPerPage: number;
 }
+
+interface OrderingParams<TargetType> {
+  field: keyof TargetType;
+  order: 'ASC' | 'DESC';
+}
+
 
 export const serviceAPI = createApi({
   reducerPath: 'serviceAPI',
@@ -33,12 +56,20 @@ export const serviceAPI = createApi({
   }),
 
   endpoints: (build) => ({
-    readCarsForPage: build.query<FetchCarsResponse, PaginationParams>({
+    readCar: build.query<Car, CarReadParams>({
+      providesTags: ['Car'],
+      query: ({ id }) => ({
+        url: `garage/${id}`,
+        method: 'GET'
+      })
+    }),
+
+    readCarsForPage: build.query<EntitySubsetWithTotal<Car>, PaginationParams>({
       providesTags: ['Car'],
       transformResponse: (cars, meta) => {
         const resp = {
           total: +(meta?.response?.headers.get('X-Total-Count') ?? 0),
-          cars: cars as Car[]
+          items: cars as Car[]
         }
         return resp
       },
@@ -61,7 +92,7 @@ export const serviceAPI = createApi({
         headers: {
           'Content-type': 'application/json'
         },
-        body: JSON.stringify(params)        
+        body: JSON.stringify(params)
       })
     }),
 
@@ -70,6 +101,66 @@ export const serviceAPI = createApi({
       query: ({ id }) => ({
         url: `garage/${id}`,
         method: 'DELETE',
+      })
+    }),
+
+    readWinner: build.query<IWinner, number>({
+      query: (id) => ({
+        url: `winners/${id}`,
+        method: 'GET'
+      })
+    }),
+
+    readWinners: build.query<IWinner[], void>({
+      query: () => ({
+        url: 'winners',
+        method: 'GET'
+      })
+    }),
+
+    readWinnersForPage: build.query<EntitySubsetWithTotal<IWinner>, PaginationParams & OrderingParams<IWinner>>({
+      providesTags: ['Winner'],
+      transformResponse: (winners, meta) => {
+        const resp = {
+          total: +(meta?.response?.headers.get('X-Total-Count') ?? 0),
+          items: winners as IWinner[]
+        }
+        return resp
+      },
+      query: ({ page, itemsPerPage, field, order }) => ({
+        url: 'winners',
+        method: 'GET',
+        params: {
+          _page: page,
+          _limit: itemsPerPage,
+          _sort: field,
+          _order: order
+        },
+      }),
+
+    }),
+
+    createWinner: build.mutation<IWinner, WinnerCreationParams>({
+      invalidatesTags: ['Winner'],
+      query: (params) => ({
+        url: 'winners',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(params)
+      })
+    }),
+
+    updateWinner: build.mutation<IWinner, WinnerUpdateParams>({
+      invalidatesTags: ['Winner'],
+      query: ({ id, ...rest }) => ({
+        url: `winners/${id}`,
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(rest)
       })
     })
   })
