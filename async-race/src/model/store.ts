@@ -1,4 +1,4 @@
-import { combineReducers, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 
 import pageReducer from './feature/pages/slice';
 import createCarRedcuer from './feature/createCar';
@@ -10,7 +10,7 @@ import winnersTableParamsReducer from './feature/winnersTableParams';
 import serviceAPI from './service/serviceAPI';
 
 const store = configureStore({
-  reducer: combineReducers({
+  reducer: {
     pages: pageReducer,
     createCar: createCarRedcuer,
     updateCar: updateCarReducer,
@@ -18,10 +18,12 @@ const store = configureStore({
     tracks: tracksReducer,
     winnersPageParams: winnersTableParamsReducer,
     [serviceAPI.reducerPath]: serviceAPI.reducer,
-  }),
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(serviceAPI.middleware)
+  },
 
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware()
+      .concat(serviceAPI.middleware)
+  }
 });
 
 export type RootState = ReturnType<typeof store.getState>;
