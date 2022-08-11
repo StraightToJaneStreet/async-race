@@ -134,12 +134,13 @@ body {
 
 .winners-table__header-column {
   flex: 0 0 80px;
-
   padding: 5px;
+  padding-right: 15px;
 }
 
 .winners-table__row {
   display: flex;
+  gap: 5px;
   align-items: center;
 }
 
@@ -151,8 +152,39 @@ body {
   overflow: hidden;
 
   padding: 5px;
+  padding-right: 15px;
 }
 
 .winners-table__column--car svg {
   width: 60%;
+}
+
+.winners-table__header-column--sort {
+  position: relative;
+  background-color: red;
+
+  user-select: none;
+  cursor: pointer;
+}
+
+.winners-table__header-column--sort::after {
+  content: "";
+  position: absolute;
+  width: 0px;
+  height: 0px;
+
+  border-left: 15px solid black;
+  border-top: 7.5px solid red;
+  border-bottom: 7.5px solid red;
+
+  right: 3px;
+  top: calc(50% - 7.5px);
+  
+}
+.winners-table__header-column--sort_up::after {
+  transform: rotate(-90deg);
+}
+
+.winners-table__header-column--sort_down::after {
+  transform: rotate(90deg);
 }

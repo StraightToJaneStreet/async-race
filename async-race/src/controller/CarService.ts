@@ -1,5 +1,7 @@
-import { actionRemoveCarForUpdate, actionSetCarForUpdate } from '../model/feature/garagePageProperties';
-import { actionSetColor, actionSetName } from '../model/feature/updateCar';
+import garagePageSlice from '../model/feature/garagePage';
+
+import  updateCarConfigurationReducer from '../model/feature/updateCar';
+
 import serviceAPI, {
   CarCreationParams,
   CarDeletingParams,
@@ -61,8 +63,9 @@ export default class CarService {
     store.dispatch(serviceAPI.endpoints.deleteCar.initiate(params));
 
     const garageParams = storeSelectGaragePage(store.getState());
-    if (garageParams.carIdForUpdate === params.id) {
-      store.dispatch(actionRemoveCarForUpdate());
+    if (garageParams.carForUpdate === params.id) {
+      const { removeCarForUpdate } = garagePageSlice.actions;
+      store.dispatch(removeCarForUpdate());
     }
 
     const sub = store.dispatch(serviceAPI.endpoints.readWinner.initiate(params.id));
@@ -81,22 +84,26 @@ export default class CarService {
 
   updateCar(params: CarUpdatingParams) {
     const garageParams = storeSelectGaragePage(store.getState());
-    const selectedCar = garageParams.carIdForUpdate;
+    const selectedCar = garageParams.carForUpdate;
     if (selectedCar === null) {
       return;
     }
+
     store.dispatch(serviceAPI.endpoints.updateCar.initiate({ id: selectedCar, ...params }));
   }
 
   selectCarForUpdate(id: number) {
-    store.dispatch(actionSetCarForUpdate(id));
+    const { setCarForUpdate } = garagePageSlice.actions;
+    store.dispatch(setCarForUpdate(id));
+    
     const sub = store.dispatch(serviceAPI.endpoints.readCar.initiate({ id }));
     sub.then(({ data }) => {
       if (data === undefined) {
         return;
       }
-      store.dispatch(actionSetName(data.name));
-      store.dispatch(actionSetColor(data.color));
+      const { setColor, setName } = updateCarConfigurationReducer.actions;
+      store.dispatch(setName(data.name));
+      store.dispatch(setColor(data.color));
     })
   }
 

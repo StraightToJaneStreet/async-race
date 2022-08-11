@@ -1,12 +1,19 @@
 import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
-import { RootState, storeSelectGaragePage } from "../../../model/store";
+import {
+  RootState,
+  storeSelectUpdateCarConfigurationState,
+  storeSelectGaragePage
+} from "../../../model/store";
 
 import Button from '../../components/Button';
 import CarConfiguration from '../../components/CarConfiguration';
-import { actionSetName, actionSetColor } from '../../../model/feature/updateCar';
-import { connect } from 'react-redux';
-import { useSelector } from 'react-redux';
+import updateCarConfigurationSlice from '../../../model/feature/updateCar';
+import {
+  connect,
+  useSelector
+} from 'react-redux';
+
 import CarServiceContext from '../../CarServiceContext';
 
 interface UpdateCarProps {
@@ -15,16 +22,17 @@ interface UpdateCarProps {
 }
 
 const mapToState = (state: RootState): UpdateCarProps => {
-  return {
-    name: state.updateCar.name,
-    color: state.updateCar.color
-  };
+  const { name, color } = storeSelectUpdateCarConfigurationState(state);
+  return { name, color };
 }
 
 function UpdateCar({ name, color }: UpdateCarProps) {
-  const { carIdForUpdate } = useSelector(storeSelectGaragePage);
-
+  const { carForUpdate } = useSelector(storeSelectGaragePage);
+  
+  const isElementEnabled = carForUpdate !== null;
+  
   const { updateCar } = useContext(CarServiceContext);
+  const { setName, setColor } = updateCarConfigurationSlice.actions;
 
   const dispatch = useDispatch();
 
@@ -32,12 +40,12 @@ function UpdateCar({ name, color }: UpdateCarProps) {
     <div className="configurator configurator__update">
       <CarConfiguration
         name={name} color={color}
-        enabled={carIdForUpdate !== null}
-        updateName={(value) => dispatch(actionSetName(value))}
-        updateColor={(value) => dispatch(actionSetColor(value))}/>
+        enabled={isElementEnabled}
+        updateName={(value) => dispatch(setName(value))}
+        updateColor={(value) => dispatch(setColor(value))}/>
       <Button
         label='Update'
-        enabled={carIdForUpdate !== null}
+        enabled={isElementEnabled}
         handleClick={() => updateCar({ color, name })} />
     </div>
   );

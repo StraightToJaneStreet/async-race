@@ -1,43 +1,32 @@
-import { createReducer } from "@reduxjs/toolkit";
-import { MAXIMAL_CAR_NAME_LENGTH } from "../../../core/Contants";
-import { createActionCreatorFactory } from "../../utils";
+import { 
+  createSlice,
+  PayloadAction
+} from "@reduxjs/toolkit";
 
-const PREFIX = 'createCarState';
-type TPrefix = `${typeof PREFIX}`;
+const INITIAL_COLOR = '#000000';
 
-const actionFactory = createActionCreatorFactory<TPrefix>(PREFIX);
-
-export interface CreateCarState {
+export interface CreateCarConfigurationState {
   name: string;
   color: string;
 }
-
-const INITIAL_COLOR = '#000000';
 
 const initialState = {
   name: '',
   color: INITIAL_COLOR
 }
 
-export const actionSetName = actionFactory<string, 'setColor'>('setColor');
-export const actionSetColor = actionFactory<string, 'setName'>('setName');
-export const actionSetParams = actionFactory<CreateCarState, 'setParams'>('setParams');
-
-const reducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(actionSetParams, (_state, { payload }) => {
-      return { ...payload };
-    })
-    .addCase(actionSetName, (state, { payload }) => {
-      if (payload.length > MAXIMAL_CAR_NAME_LENGTH) {
-        return;
-      }
+const slice = createSlice({
+  name: 'createCarConfiguration',
+  initialState,
+  reducers: {
+    setName(state, { payload }: PayloadAction<string>) {
       state.name = payload;
-    })
-    .addCase(actionSetColor, (state, { payload }) => {
+    },
+
+    setColor(state, { payload }: PayloadAction<string>) {
       state.color = payload;
-    })
-});
+    },    
+  }
+})
 
-
-export default reducer;
+export default slice;

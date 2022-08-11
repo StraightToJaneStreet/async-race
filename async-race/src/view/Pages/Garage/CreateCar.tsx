@@ -1,15 +1,20 @@
-import React, { useContext } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import React from 'react';
+import { useContext } from 'react';
+
+import {
+  connect,
+  useDispatch
+} from 'react-redux';
+
+import createCarConfigurationSlice from '../../../model/feature/createCar';
+import {
+  RootState,
+  storeSelectCreateCarConfigurationState
+} from '../../../model/store';
 
 import Button from '../../components/Button';
 import CarConfiguration from '../../components/CarConfiguration';
 
-import {
-  actionSetName,
-  actionSetColor
-} from '../../../model/feature/createCar';
-
-import { RootState } from '../../../model/store';
 import CarServiceContext from '../../CarServiceContext';
 
 interface CreateCarProps {
@@ -18,14 +23,16 @@ interface CreateCarProps {
 }
 
 const mapToState = (state: RootState): CreateCarProps => {
-  return {
-    color: state.createCar.color,
-    name: state.createCar.name
-  }
+  const { name, color } =
+    storeSelectCreateCarConfigurationState(state);
+  
+  return { name, color };
 }
 
 function CreateCar({ name, color }: CreateCarProps) {
   const { createCar } = useContext(CarServiceContext);
+
+  const { setColor, setName } = createCarConfigurationSlice.actions;
 
   const dispatch = useDispatch();
 
@@ -33,8 +40,8 @@ function CreateCar({ name, color }: CreateCarProps) {
     <div className="configurator configurator__create-car">
       <CarConfiguration
         name={name} color={color}
-        updateColor={(value) => dispatch(actionSetColor(value))}
-        updateName={(value) => dispatch(actionSetName(value))}/>
+        updateColor={(value) => dispatch(setColor(value))}
+        updateName={(value) => dispatch(setName(value))}/>
       <Button
         label='Create'
         enabled={name.length !== 0}

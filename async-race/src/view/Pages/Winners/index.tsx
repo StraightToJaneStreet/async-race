@@ -8,10 +8,7 @@ import {
 import serviceAPI from '../../../model/service/serviceAPI';
 
 import { storeSelectWinnersPageParams } from '../../../model/store';
-import {
-  actionIncrementPage,
-  actionDecrementPage
-} from '../../../model/feature/winnersTableParams';
+import winnersPageSlice from '../../../model/feature/winnersPage';
 import WinnersTable from './WinnersTable';
 import Button from '../../components/Button';
 
@@ -20,7 +17,12 @@ export default function Winners() {
   const { data: winners } = serviceAPI.useReadWinnersQuery();
   const winnersCount = winners === undefined ? 0 : winners.length;
 
-  const { page } = useSelector(storeSelectWinnersPageParams);
+  const { currentPage: page } = useSelector(storeSelectWinnersPageParams);
+
+  const {
+    incrementPage,
+    decrementPage,
+  } = winnersPageSlice.actions;
 
   const dispatch = useDispatch();
 
@@ -31,10 +33,10 @@ export default function Winners() {
       <Button
         label='Prev'
         enabled={page !== 1}
-        handleClick={() => dispatch(actionDecrementPage())} />
+        handleClick={() => dispatch(incrementPage())} />
       <Button
         label='Next'
-        handleClick={() => dispatch(actionIncrementPage())} />
+        handleClick={() => dispatch(decrementPage())} />
     </>
   )
 }

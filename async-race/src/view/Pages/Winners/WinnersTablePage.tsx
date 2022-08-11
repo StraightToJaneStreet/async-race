@@ -1,6 +1,6 @@
 import React from 'react';
 import { IWinner } from '../../../core/IWinner';
-import { OrderingField, OrderingType } from '../../../model/feature/winnersTableParams';
+import { OrderingField, OrderingType } from '../../../model/feature/winnersPage';
 import serviceAPI from '../../../model/service/serviceAPI';
 
 import WinnersTableRow from './WinnersTableRow';

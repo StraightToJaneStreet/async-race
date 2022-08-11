@@ -1,5 +1,10 @@
-import { createEntityAdapter, createReducer, EntityState, Update } from "@reduxjs/toolkit";
-import { createActionCreatorFactory } from "../../utils";
+import {
+  createEntityAdapter,
+  createSlice,
+  EntityState,
+  PayloadAction,
+  Update
+} from "@reduxjs/toolkit";
 
 export enum TrackStateVariants {
   Running,
@@ -38,7 +43,6 @@ interface RunningTrackParams {
   distance: number;
 }
 
-
 export interface TrackInitializationParams {
   carId: number;
   velocity: number;
@@ -72,20 +76,13 @@ const createFinishedStateParams = (duration: number): FinishedStateParams => ({
   duration
 })
 
-const factory = createActionCreatorFactory<'tracks'>('tracks');
-
-export const actionInitializeTrack = factory<TrackInitializationParams, 'initializeTrack'>('initializeTrack');
-export const actionResetTrack = factory<number, 'removeItem'>('removeItem');
-export const actionResetAllTracks = factory<void, 'resetAllTracks'>('resetAllTracks');
-export const actionBrokeCarOnTrack = factory<number, 'brokeCarOnTrack'>('brokeCarOnTrack');
-export const actionTrackFinished = factory<number, 'trackFinished'>('trackFinished');
-export const actionUpdateProgress = factory<void, 'updateProgress'>('updateProgress');
-
 const initialState = adapter.getInitialState();
 
-const reducer = createReducer(initialState, (builder) => {
-  builder
-    .addCase(actionInitializeTrack, (state, { payload }) => {
+const slice = createSlice({
+  name: 'activeTracks',
+  initialState,
+  reducers: {
+    initializeTrack(state, { payload }: PayloadAction<TrackInitializationParams>) {
       const { velocity, distance, carId } = payload;
 
       const currentTimestamp = performance.now();
@@ -98,17 +95,17 @@ const reducer = createReducer(initialState, (builder) => {
       }
 
       adapter.addOne(state, track);
-    })
+    },
 
-    .addCase(actionResetTrack, (state, { payload }) => {
+    resetTrack(state, { payload }: PayloadAction<number>) {
       adapter.removeOne(state, payload);
-    })
+    },
 
-    .addCase(actionResetAllTracks, (state) => {
+    resetAllTacks(state) {
       adapter.removeAll(state);
-    })
+    },
 
-    .addCase(actionBrokeCarOnTrack, (state, { payload }) => {
+    brokeCar(state, { payload }: PayloadAction<number>) {
       const oldState = selectTrack(state, payload);
       if (oldState === undefined) {
         return;
@@ -120,9 +117,9 @@ const reducer = createReducer(initialState, (builder) => {
       const update: Update<TrackParams> = { id: payload, changes };
 
       adapter.updateOne(state, update);
-    })
+    },
 
-    .addCase(actionTrackFinished, (state, { payload }) => {
+    finishTrack(state, { payload}: PayloadAction<number>) {
       const oldState = selectTrack(state, payload);
       if (oldState === undefined || oldState.stateParams.state !== TrackStateVariants.Running) {
         return;
@@ -138,10 +135,9 @@ const reducer = createReducer(initialState, (builder) => {
       const update: Update<TrackParams> = { id: payload, changes };
 
       adapter.updateOne(state, update);
-    })
+    },
 
-    .addCase(actionUpdateProgress, (state) => {
-
+    updateProgress(state) {
       const tracks = adapter.getSelectors().selectAll(state);
 
       const updates = tracks
@@ -163,10 +159,13 @@ const reducer = createReducer(initialState, (builder) => {
           }
           return udpate;
         });
+
       adapter.updateMany(state, updates);
-    })
+    }
+    
+  }
 });
 
 const isRunning = (track: TrackParams): track is RunningTrackParams => track.stateParams.state === TrackStateVariants.Running;
 
-export default reducer;
+export default slice;

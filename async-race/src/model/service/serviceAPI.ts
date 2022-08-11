@@ -1,6 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { Car } from '../../core/Car';
 import { IWinner } from '../../core/IWinner';
+import { OrderingType } from '../feature/winnersPage';
 
 interface EntitySubsetWithTotal<T> {
   total: number;
@@ -49,9 +50,8 @@ interface PaginationParams {
 
 interface OrderingParams<TargetType> {
   field: keyof TargetType;
-  order: 'ASC' | 'DESC';
+  order: OrderingType;
 }
-
 
 export const serviceAPI = createApi({
   reducerPath: 'serviceAPI',

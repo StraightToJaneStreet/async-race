@@ -1,8 +1,6 @@
+import tracksSlice from '../model/feature/tracks';
+
 import {
-  actionBrokeCarOnTrack,
-  actionInitializeTrack,
-  actionResetTrack,
-  actionTrackFinished,
   selectllTracks,
   selectTrack,
   TrackInitializationParams
@@ -50,7 +48,8 @@ export default class RacingService {
             velocity,
             distance
           };
-          store.dispatch(actionInitializeTrack(init));
+          const { initializeTrack } = tracksSlice.actions;
+          store.dispatch(initializeTrack(init));
 
           return this.engineApiService.setEngineDriveMode(carId);
         })
@@ -58,14 +57,16 @@ export default class RacingService {
           (result) => {
             if (result) {
               const endTimespamp = performance.now();
-              const action = actionTrackFinished(carId);
+              const { finishTrack } = tracksSlice.actions;
+              const action = finishTrack(carId);
               store.dispatch(action);
               resolve({
                 id: carId,
                 duration: (endTimespamp - startTimestamp) / 1000
               });
             } else {
-              const action = actionBrokeCarOnTrack(carId);
+              const { brokeCar } = tracksSlice.actions;
+              const action = brokeCar(carId);
               store.dispatch(action);
               reject();
             }
@@ -131,12 +132,12 @@ export default class RacingService {
       resetRaceFor: this.resetRaceFor.bind(this),
       startCar: this.startCar.bind(this),
       stopCar: this.stopCar.bind(this),
-
     }
   }
 
   protected stopCarEngine(carId: number) {
-    store.dispatch(actionResetTrack(carId));
+    const { resetTrack } = tracksSlice.actions;
+    store.dispatch(resetTrack(carId));
     this.engineApiService
       .stopEngine(carId);
   }

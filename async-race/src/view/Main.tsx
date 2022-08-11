@@ -1,36 +1,31 @@
-import React, { useContext } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
+import { useState } from 'react';
 
-import { RootState } from '../model/store';
 import Page from '../core/Page';
 
-import Context from './AppContext';
-
-import Winners from './Pages/Winners';
 import Garage from './Pages/Garage';
+import Winners from './Pages/Winners';
+
 import Button from './components/Button';
 
-interface StateProps {
-  currentPage: Page
-}
+interface MainProps { }
 
-const mapState = (state: RootState): StateProps => ({ currentPage: state.pages.value });
+const Main = (_props: MainProps) => {
+  const [ page, setPage ] = useState(Page.Garage);
 
-const Main = (props: StateProps) => {
-  const context = useContext(Context);
-  const { handleSetPage } = context;
+  const navToGaragePage = () => setPage(Page.Garage);
+  const navToWinnersPage = () => setPage(Page.Winners);
 
   return (
     <div className="application">
       <div className="application__wip-header">I need 1 more day.</div>
       <div className="application__heading">
-        <Button handleClick={() => handleSetPage(Page.Garage)} label='To garage'/>
-        <Button handleClick={() => handleSetPage(Page.Winners)} label='To winners'/>
+        <Button label='To garage' handleClick={navToGaragePage}/>
+        <Button label='To winners' handleClick={navToWinnersPage}/>
       </div>
-      {
-        props.currentPage === Page.Garage
+      { page === Page.Garage
         ? <Garage/>
-        : props.currentPage === Page.Winners
+        : page === Page.Winners
           ? <Winners/>
           : <p>Invalid page</p>
       }
@@ -38,5 +33,5 @@ const Main = (props: StateProps) => {
   );
 }
 
-export default connect(mapState)(Main);
+export default Main;
 

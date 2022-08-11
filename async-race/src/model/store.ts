@@ -1,50 +1,49 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import pageReducer from './feature/pages/slice';
-import createCarRedcuer from './feature/createCar';
-import updateCarReducer from './feature/updateCar';
-import garagePageParamsReducer from './feature/garagePageProperties';
-import tracksReducer from './feature/tracks';
-import winnersTableParamsReducer from './feature/winnersTableParams';
+import tracksSlice from './feature/tracks';
+
+import createCarSlice from './feature/createCar';
+import updateCarSlice from './feature/updateCar';
+
+import garagePageSlice from './feature/garagePage';
+import winnersPageSlice from './feature/winnersPage';
 
 import serviceAPI from './service/serviceAPI';
 
 const store = configureStore({
   reducer: {
-    pages: pageReducer,
-    createCar: createCarRedcuer,
-    updateCar: updateCarReducer,
-    garagePageParams: garagePageParamsReducer,
-    tracks: tracksReducer,
-    winnersPageParams: winnersTableParamsReducer,
+    [createCarSlice.name]: createCarSlice.reducer,
+    [updateCarSlice.name]: updateCarSlice.reducer,
+    [garagePageSlice.name]: garagePageSlice.reducer,
+    [tracksSlice.name]: tracksSlice.reducer,
+    [winnersPageSlice.name]: winnersPageSlice.reducer,
     [serviceAPI.reducerPath]: serviceAPI.reducer,
   },
 
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
-      .concat(serviceAPI.middleware)
+      .concat(serviceAPI.middleware);
   }
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 
-export const storeSelectPages = (state: RootState): ReturnType<typeof pageReducer> =>
-  state.pages;
+export const storeSelectCreateCarConfigurationState
+  = (state: RootState): ReturnType<typeof createCarSlice.reducer> =>
+    state[createCarSlice.name];
 
-export const storeSelectCreateCar = (state: RootState): ReturnType<typeof createCarRedcuer> =>
-  state.createCar;
+export const storeSelectUpdateCarConfigurationState =
+  (state: RootState): ReturnType<typeof updateCarSlice.reducer> =>
+    state[updateCarSlice.name];
 
-export const storeSelectUpdateCar = (state: RootState): ReturnType<typeof updateCarReducer> =>
-  state.updateCar;
+export const storeSelectGaragePage = (state: RootState): ReturnType<typeof garagePageSlice.reducer> =>
+  state[garagePageSlice.name];
 
-export const storeSelectGaragePage = (state: RootState): ReturnType<typeof garagePageParamsReducer> =>
-  state.garagePageParams;
-
-export const storeSelectTracks = (state: RootState): ReturnType<typeof tracksReducer> =>
-  state.tracks;
+export const storeSelectTracks = (state: RootState): ReturnType<typeof tracksSlice.reducer> =>
+  state[tracksSlice.name];
 
 export const storeSelectWinnersPageParams = (state: RootState)
-: ReturnType<typeof winnersTableParamsReducer> =>
-  state.winnersPageParams;
+: ReturnType<typeof winnersPageSlice.reducer> =>
+  state[winnersPageSlice.name];
 
 export default store;

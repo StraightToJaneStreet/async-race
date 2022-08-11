@@ -5,18 +5,18 @@ import { useSelector } from 'react-redux';
 
 import { Car } from '../../../core/Car';
 
-import { actionDecrementPage, actionIncrementPage } from '../../../model/feature/garagePageProperties';
+import garagePageSlice from '../../../model/feature/garagePage';
 import { RootState, storeSelectTracks } from '../../../model/store';
-
-import Button from '../../components/Button';
-import CreateCar from './CreateCar';
-import UpdateCar from './UpdateCar';
-import TrackList from '../../components/TrackList';
-
 import serviceAPI from '../../../model/service/serviceAPI';
 import RacingServiceContext from '../../RacingServiceContext';
 import { selectllTracks } from '../../../model/feature/tracks';
 import CarServiceContext from '../../CarServiceContext';
+
+import CreateCar from './CreateCar';
+import UpdateCar from './UpdateCar';
+
+import Button from '../../components/Button';
+import TrackList from '../../components/TrackList';
 
 interface GaragePageProps {
   page: number;
@@ -24,19 +24,24 @@ interface GaragePageProps {
 
 const mapToState = (state: RootState): GaragePageProps => {
   return {
-    page: state.garagePageParams.currentPage,
+    page: state[garagePageSlice.name].currentPage,
   };
 }
 
 const CARS_PER_GARAGE_PAGE = 7;
 
 function GaragePage({ page }: GaragePageProps) {
+  const { generateCars } = useContext(CarServiceContext);
+
   const {
     startRaceFor,
     resetRaceFor,
   } = useContext(RacingServiceContext);
 
-  const { generateCars } = useContext(CarServiceContext);
+  const {
+    incrementPage,
+    decrementPage,
+  } = garagePageSlice.actions;
 
   const dispatch = useDispatch();
 
@@ -82,9 +87,9 @@ function GaragePage({ page }: GaragePageProps) {
         <Button
           label='Prev'
           enabled={page !== 1}
-          handleClick={() => dispatch(actionDecrementPage())} />
+          handleClick={() => dispatch(decrementPage())} />
 
-        <Button label='Next' handleClick={() => dispatch(actionIncrementPage())} />
+        <Button label='Next' handleClick={() => dispatch(incrementPage())} />
       </div>
     </div>
   )
