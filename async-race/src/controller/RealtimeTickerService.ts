@@ -2,7 +2,7 @@ export type RealtimeTickerCallback = () => void;
 
 export default class RealtimeTickerService {
   static instance: RealtimeTickerService | null = null;
-  
+
   static getInstance(): RealtimeTickerService {
     if (RealtimeTickerService.instance === null) {
       RealtimeTickerService.instance = new RealtimeTickerService();
@@ -11,9 +11,9 @@ export default class RealtimeTickerService {
     return RealtimeTickerService.instance;
   }
 
-  protected constructor() { }
+  protected constructor() {}
 
-  protected needStop: boolean = false;
+  protected needStop = false;
 
   protected tracks: Set<RealtimeTickerCallback> = new Set();
 

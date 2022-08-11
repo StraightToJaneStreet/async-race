@@ -12,15 +12,11 @@ import CarComponent from './Car';
 import EngineStatus from './EngineStatus';
 
 interface TrackProps {
-  car: Car
+  car: Car;
 }
 
 const Track = ({ car }: TrackProps) => {
-
-  const {
-    deleteCar,
-    selectCarForUpdate
-  } = useContext(CarServiceContext);
+  const { deleteCar, selectCarForUpdate } = useContext(CarServiceContext);
 
   const state = useSelector(storeSelectTracks);
   const trackParams = selectTrack(state, car.id);
@@ -30,27 +26,18 @@ const Track = ({ car }: TrackProps) => {
   return (
     <div className="track">
       <div className="track__header">
-        <Button
-          label='Select'
-          small
-          handleClick={() => selectCarForUpdate(car.id)}/>
-        <Button
-          label='Remove'
-          small
-          handleClick={() => deleteCar({ id: car.id })}/>
-        <span className='track__car-name'>{car.name}</span>
+        <Button label="Select" small handleClick={() => selectCarForUpdate(car.id)} />
+        <Button label="Remove" small handleClick={() => deleteCar({ id: car.id })} />
+        <span className="track__car-name">{car.name}</span>
       </div>
       <div className="track__content">
-        <EngineStatus carId={car.id}/>
+        <EngineStatus carId={car.id} />
         <div className="track__road">
-          <CarComponent
-            color={car.color}
-            trackProgress={trackProgress}/>
+          <CarComponent color={car.color} trackProgress={trackProgress} />
         </div>
       </div>
-
     </div>
-  )
-}
+  );
+};
 
 export default Track;

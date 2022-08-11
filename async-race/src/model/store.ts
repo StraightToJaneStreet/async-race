@@ -21,29 +21,24 @@ const store = configureStore({
   },
 
   middleware: (getDefaultMiddleware) => {
-    return getDefaultMiddleware()
-      .concat(serviceAPI.middleware);
-  }
+    return getDefaultMiddleware().concat(serviceAPI.middleware);
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 
-export const storeSelectCreateCarConfigurationState
-  = (state: RootState): ReturnType<typeof createCarSlice.reducer> =>
-    state[createCarSlice.name];
+export const storeSelectCreateCarConfigurationState = (state: RootState): ReturnType<typeof createCarSlice.reducer> =>
+  state[createCarSlice.name];
 
-export const storeSelectUpdateCarConfigurationState =
-  (state: RootState): ReturnType<typeof updateCarSlice.reducer> =>
-    state[updateCarSlice.name];
+export const storeSelectUpdateCarConfigurationState = (state: RootState): ReturnType<typeof updateCarSlice.reducer> =>
+  state[updateCarSlice.name];
 
 export const storeSelectGaragePage = (state: RootState): ReturnType<typeof garagePageSlice.reducer> =>
   state[garagePageSlice.name];
 
-export const storeSelectTracks = (state: RootState): ReturnType<typeof tracksSlice.reducer> =>
-  state[tracksSlice.name];
+export const storeSelectTracks = (state: RootState): ReturnType<typeof tracksSlice.reducer> => state[tracksSlice.name];
 
-export const storeSelectWinnersPageParams = (state: RootState)
-: ReturnType<typeof winnersPageSlice.reducer> =>
+export const storeSelectWinnersPageParams = (state: RootState): ReturnType<typeof winnersPageSlice.reducer> =>
   state[winnersPageSlice.name];
 
 export default store;

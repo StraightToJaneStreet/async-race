@@ -14,8 +14,9 @@ export default function Button({ label, handleClick, enabled, small }: Props) {
     <button
       className={`button${small === true ? ' button--small' : ''}`}
       disabled={!buttonEnabled}
-      onClick={handleClick}>
-        {label}
+      onClick={handleClick}
+    >
+      {label}
     </button>
   );
 }

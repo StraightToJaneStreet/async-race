@@ -1,8 +1,5 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
-import {
-  defaultRacingServiceContext,
-  IRacingServiceContext
-} from "../controller/RacingService";
+import { defaultRacingServiceContext, IRacingServiceContext } from '../controller/RacingService';
 
 export default createContext<IRacingServiceContext>(defaultRacingServiceContext);

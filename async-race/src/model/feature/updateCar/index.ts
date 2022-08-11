@@ -1,7 +1,4 @@
-import { 
-  createSlice,
-  PayloadAction
-} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 const INITIAL_COLOR = '#000000';
 
@@ -12,8 +9,8 @@ export interface UpdateCarConfigurationState {
 
 const initialState = {
   name: '',
-  color: INITIAL_COLOR
-}
+  color: INITIAL_COLOR,
+};
 
 const slice = createSlice({
   name: 'updateCarConfiguration',
@@ -25,8 +22,8 @@ const slice = createSlice({
 
     setColor(state, { payload }: PayloadAction<string>) {
       state.color = payload;
-    },    
-  }
-})
+    },
+  },
+});
 
 export default slice;

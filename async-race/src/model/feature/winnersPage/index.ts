@@ -1,13 +1,10 @@
-import {
-  createSlice,
-  PayloadAction
-} from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export type OrderingField = 'time' | 'wins';
 
 export enum OrderingType {
   Asc = 'ASC',
-  Desc = 'DESC'
+  Desc = 'DESC',
 }
 
 export interface WinnersPageState {
@@ -19,8 +16,8 @@ export interface WinnersPageState {
 const initialState: WinnersPageState = {
   currentPage: 1,
   orderingField: 'wins',
-  orderingType: OrderingType.Asc
-}
+  orderingType: OrderingType.Asc,
+};
 
 const slice = createSlice({
   name: 'winnersPage',
@@ -44,8 +41,8 @@ const slice = createSlice({
 
     setOrderingField(state, { payload }: PayloadAction<OrderingField>) {
       state.orderingField = payload;
-    }
-  }
+    },
+  },
 });
 
 export default slice;

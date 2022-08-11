@@ -1,6 +1,6 @@
 enum Page {
   Garage,
-  Winners
+  Winners,
 }
 
 export default Page;

@@ -18,13 +18,15 @@ export default function CarConfiguration({ updateColor, updateName, color, name,
         className="configurator__name"
         onChange={(e) => updateName(e.target.value)}
         disabled={!isEnabled}
-        value={name}/>
+        value={name}
+      />
       <input
         className="configurator__color"
         type="color"
         disabled={!isEnabled}
         onChange={(e) => updateColor(e.target.value)}
-        value={color}/>
+        value={color}
+      />
     </>
   );
 }

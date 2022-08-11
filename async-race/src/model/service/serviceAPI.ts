@@ -66,8 +66,8 @@ export const serviceAPI = createApi({
       providesTags: ['Car'],
       query: ({ id }) => ({
         url: `garage/${id}`,
-        method: 'GET'
-      })
+        method: 'GET',
+      }),
     }),
 
     readCarsForPage: build.query<EntitySubsetWithTotal<Car>, PaginationParams>({
@@ -75,9 +75,9 @@ export const serviceAPI = createApi({
       transformResponse: (cars, meta) => {
         const resp = {
           total: +(meta?.response?.headers.get('X-Total-Count') ?? 0),
-          items: cars as Car[]
-        }
-        return resp
+          items: cars as Car[],
+        };
+        return resp;
       },
       query: ({ page, itemsPerPage }) => ({
         url: 'garage',
@@ -87,7 +87,6 @@ export const serviceAPI = createApi({
           _limit: itemsPerPage,
         },
       }),
-
     }),
 
     createCar: build.mutation<CarIdResponse, CarCreationParams>({
@@ -96,10 +95,10 @@ export const serviceAPI = createApi({
         url: 'garage',
         method: 'POST',
         headers: {
-          'Content-type': 'application/json'
+          'Content-type': 'application/json',
         },
-        body: JSON.stringify(params)
-      })
+        body: JSON.stringify(params),
+      }),
     }),
 
     deleteCar: build.mutation<void, CarDeletingParams>({
@@ -107,7 +106,7 @@ export const serviceAPI = createApi({
       query: ({ id }) => ({
         url: `garage/${id}`,
         method: 'DELETE',
-      })
+      }),
     }),
 
     updateCar: build.mutation<Car, CarUpdatingParams>({
@@ -116,24 +115,24 @@ export const serviceAPI = createApi({
         url: `garage/${id}`,
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(rest)
-      })
+        body: JSON.stringify(rest),
+      }),
     }),
 
     readWinner: build.query<IWinner, number>({
       query: (id) => ({
         url: `winners/${id}`,
-        method: 'GET'
-      })
+        method: 'GET',
+      }),
     }),
 
     readWinners: build.query<IWinner[], void>({
       query: () => ({
         url: 'winners',
-        method: 'GET'
-      })
+        method: 'GET',
+      }),
     }),
 
     readWinnersForPage: build.query<EntitySubsetWithTotal<IWinner>, PaginationParams & OrderingParams<IWinner>>({
@@ -141,9 +140,9 @@ export const serviceAPI = createApi({
       transformResponse: (winners, meta) => {
         const resp = {
           total: +(meta?.response?.headers.get('X-Total-Count') ?? 0),
-          items: winners as IWinner[]
-        }
-        return resp
+          items: winners as IWinner[],
+        };
+        return resp;
       },
       query: ({ page, itemsPerPage, field, order }) => ({
         url: 'winners',
@@ -152,10 +151,9 @@ export const serviceAPI = createApi({
           _page: page,
           _limit: itemsPerPage,
           _sort: field,
-          _order: order
+          _order: order,
         },
       }),
-
     }),
 
     createWinner: build.mutation<IWinner, WinnerCreationParams>({
@@ -164,18 +162,18 @@ export const serviceAPI = createApi({
         url: 'winners',
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(params)
-      })
+        body: JSON.stringify(params),
+      }),
     }),
 
     deleteWinner: build.mutation<void, number>({
       invalidatesTags: ['Winner'],
       query: (id) => ({
         url: `winners/${id}`,
-        method: 'DELETE'
-      })
+        method: 'DELETE',
+      }),
     }),
 
     updateWinner: build.mutation<IWinner, WinnerUpdateParams>({
@@ -184,12 +182,12 @@ export const serviceAPI = createApi({
         url: `winners/${id}`,
         method: 'PUT',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(rest)
-      })
-    })
-  })
+        body: JSON.stringify(rest),
+      }),
+    }),
+  }),
 });
 
 export default serviceAPI;

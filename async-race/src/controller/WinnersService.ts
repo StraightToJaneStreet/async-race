@@ -1,6 +1,6 @@
-import { selectTrack } from "../model/feature/tracks";
-import serviceAPI from "../model/service/serviceAPI";
-import store, { storeSelectTracks } from "../model/store";
+import { selectTrack } from '../model/feature/tracks';
+import serviceAPI from '../model/service/serviceAPI';
+import store, { storeSelectTracks } from '../model/store';
 
 interface HandleRacingVictoryParams {
   id: number;
@@ -21,42 +21,43 @@ export default class WinnersService {
   handleRacingVictory({ id, time }: HandleRacingVictoryParams) {
     const prettyTime = Math.trunc(time * 100) / 100;
 
-    const tracksState = storeSelectTracks(store.getState());    
+    const tracksState = storeSelectTracks(store.getState());
     const isWinnerOnTrack = selectTrack(tracksState, id) !== undefined;
 
     if (isWinnerOnTrack === false) {
       return;
     }
-    
-    const res = store.dispatch(serviceAPI.endpoints.readWinner.initiate(id));    
+
+    const res = store.dispatch(serviceAPI.endpoints.readWinner.initiate(id));
     res.then(({ data: winner }) => {
       if (winner === undefined) {
-        store.dispatch(serviceAPI.endpoints.createWinner.initiate({
-          id,
-          time: prettyTime,
-          wins: 1
-        }));
+        store.dispatch(
+          serviceAPI.endpoints.createWinner.initiate({
+            id,
+            time: prettyTime,
+            wins: 1,
+          })
+        );
         return;
       }
 
-      const {
-        wins: oldWinsCount,
-        time: oldBestTime
-      } = winner;
+      const { wins: oldWinsCount, time: oldBestTime } = winner;
 
-      store.dispatch(serviceAPI.endpoints.updateWinner.initiate({
-        id,
-        time: Math.min(oldBestTime, prettyTime),
-        wins: oldWinsCount + 1
-      }))
+      store.dispatch(
+        serviceAPI.endpoints.updateWinner.initiate({
+          id,
+          time: Math.min(oldBestTime, prettyTime),
+          wins: oldWinsCount + 1,
+        })
+      );
     });
 
     const carSubscription = store.dispatch(serviceAPI.endpoints.readCar.initiate({ id }));
 
     carSubscription.then(({ data: car }) => {
       if (car !== undefined) {
-        this.handleWinnerCallback(car.name, time);        
+        this.handleWinnerCallback(car.name, time);
       }
-    })    
+    });
   }
 }

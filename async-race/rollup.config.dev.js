@@ -8,10 +8,10 @@ import livereload from 'rollup-plugin-livereload';
 import css from 'rollup-plugin-import-css';
 
 export default {
-  input: "src/index.ts",
+  input: 'src/index.ts',
   output: {
-    file: "dist/bundle.js",
-    format: "iife",
+    file: 'dist/bundle.js',
+    format: 'iife',
     sourcemap: true,
   },
   plugins: [
@@ -20,22 +20,22 @@ export default {
     babel({
       sourceMaps: 'both',
       babelHelpers: 'bundled',
-      presets: ["@babel/preset-react"],
-      plugins: ["@babel/plugin-transform-typescript"]
+      presets: ['@babel/preset-react'],
+      plugins: ['@babel/plugin-transform-typescript'],
     }),
     nodeResolve(),
     replace({
       preventAssignment: true,
-      'process.env.NODE_ENV': JSON.stringify( 'production' )
+      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
-    commonjs(),    
+    commonjs(),
     serve({
       open: true,
       verbose: true,
-      contentBase: ["", "public"],
-      host: "localhost",
+      contentBase: ['', 'public'],
+      host: 'localhost',
       port: 9000,
     }),
-    livereload({ watch: "dist" }),
-  ]
+    livereload({ watch: 'dist' }),
+  ],
 };

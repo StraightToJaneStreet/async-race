@@ -1,14 +1,10 @@
 import tracksSlice from '../model/feature/tracks';
 
-import {
-  selectllTracks,
-  selectTrack,
-  TrackInitializationParams
-} from "../model/feature/tracks";
+import { selectllTracks, selectTrack, TrackInitializationParams } from '../model/feature/tracks';
 
-import store, { storeSelectTracks } from "../model/store";
-import EngineApiService from "./EngineApiService";
-import WinnersService from "./WinnersService";
+import store, { storeSelectTracks } from '../model/store';
+import EngineApiService from './EngineApiService';
+import WinnersService from './WinnersService';
 
 interface SuccesfulRaceEndParams {
   id: number;
@@ -18,10 +14,10 @@ interface SuccesfulRaceEndParams {
 function defaultContextImplementation(..._ags: unknown[]): void {}
 
 export interface IRacingServiceContext {
-  startCar: (carId: number) => void,
-  stopCar: (carId: number) => void,
-  startRaceFor: (carIds: number[]) => void,
-  resetRaceFor: (carIds: number[]) => void,
+  startCar: (carId: number) => void;
+  stopCar: (carId: number) => void;
+  startRaceFor: (carIds: number[]) => void;
+  resetRaceFor: (carIds: number[]) => void;
 }
 
 export const defaultRacingServiceContext: IRacingServiceContext = {
@@ -29,15 +25,12 @@ export const defaultRacingServiceContext: IRacingServiceContext = {
   stopCar: defaultContextImplementation,
   startRaceFor: defaultContextImplementation,
   resetRaceFor: defaultContextImplementation,
-}
+};
 
 export default class RacingService {
-  constructor(
-    protected winnersService: WinnersService,
-    protected engineApiService: EngineApiService) { }
+  constructor(protected winnersService: WinnersService, protected engineApiService: EngineApiService) {}
 
   protected createTrackPromise(carId: number): Promise<SuccesfulRaceEndParams> {
-
     const trackPromise: Promise<SuccesfulRaceEndParams> = new Promise((resolve, reject) => {
       const startTimestamp = performance.now();
       this.engineApiService
@@ -46,32 +39,30 @@ export default class RacingService {
           const init: TrackInitializationParams = {
             carId,
             velocity,
-            distance
+            distance,
           };
           const { initializeTrack } = tracksSlice.actions;
           store.dispatch(initializeTrack(init));
 
           return this.engineApiService.setEngineDriveMode(carId);
         })
-        .then(
-          (result) => {
-            if (result) {
-              const endTimespamp = performance.now();
-              const { finishTrack } = tracksSlice.actions;
-              const action = finishTrack(carId);
-              store.dispatch(action);
-              resolve({
-                id: carId,
-                duration: (endTimespamp - startTimestamp) / 1000
-              });
-            } else {
-              const { brokeCar } = tracksSlice.actions;
-              const action = brokeCar(carId);
-              store.dispatch(action);
-              reject();
-            }
-          },
-        );
+        .then((result) => {
+          if (result) {
+            const endTimespamp = performance.now();
+            const { finishTrack } = tracksSlice.actions;
+            const action = finishTrack(carId);
+            store.dispatch(action);
+            resolve({
+              id: carId,
+              duration: (endTimespamp - startTimestamp) / 1000,
+            });
+          } else {
+            const { brokeCar } = tracksSlice.actions;
+            const action = brokeCar(carId);
+            store.dispatch(action);
+            reject();
+          }
+        });
     });
 
     return trackPromise;
@@ -79,7 +70,7 @@ export default class RacingService {
 
   startCar(carId: number): void {
     const trackPromise = this.createTrackPromise(carId);
-    trackPromise.catch(() => { });
+    trackPromise.catch(() => {});
   }
 
   stopCar(carId: number): void {
@@ -98,21 +89,23 @@ export default class RacingService {
       let rejectionsCount = 0;
       const promisesCount = tracks.length;
       tracks.forEach((trackPromise) => {
-        trackPromise.then((result) => resolve(result)).catch(() => {
-          rejectionsCount += 1;
-          if (rejectionsCount === promisesCount) {
-            reject();
-          }
-        })
-      })
+        trackPromise
+          .then((result) => resolve(result))
+          .catch(() => {
+            rejectionsCount += 1;
+            if (rejectionsCount === promisesCount) {
+              reject();
+            }
+          });
+      });
     })
-    .then(({ id, duration }) => {
-      this.winnersService.handleRacingVictory({
-        id,
-        time: duration
+      .then(({ id, duration }) => {
+        this.winnersService.handleRacingVictory({
+          id,
+          time: duration,
+        });
       })
-    })
-    .catch(() => { });
+      .catch(() => {});
   }
 
   resetRaceFor(carIds: number[]) {
@@ -132,14 +125,12 @@ export default class RacingService {
       resetRaceFor: this.resetRaceFor.bind(this),
       startCar: this.startCar.bind(this),
       stopCar: this.stopCar.bind(this),
-    }
+    };
   }
 
   protected stopCarEngine(carId: number) {
     const { resetTrack } = tracksSlice.actions;
     store.dispatch(resetTrack(carId));
-    this.engineApiService
-      .stopEngine(carId);
+    this.engineApiService.stopEngine(carId);
   }
-
 }

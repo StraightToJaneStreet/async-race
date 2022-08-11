@@ -26,28 +26,22 @@ const mapToState = (state: RootState): GaragePageProps => {
   return {
     page: state[garagePageSlice.name].currentPage,
   };
-}
+};
 
 const CARS_PER_GARAGE_PAGE = 7;
 
 function GaragePage({ page }: GaragePageProps) {
   const { generateCars } = useContext(CarServiceContext);
 
-  const {
-    startRaceFor,
-    resetRaceFor,
-  } = useContext(RacingServiceContext);
+  const { startRaceFor, resetRaceFor } = useContext(RacingServiceContext);
 
-  const {
-    incrementPage,
-    decrementPage,
-  } = garagePageSlice.actions;
+  const { incrementPage, decrementPage } = garagePageSlice.actions;
 
   const dispatch = useDispatch();
 
-  const { data: carsState,  } = serviceAPI.useReadCarsForPageQuery({
+  const { data: carsState } = serviceAPI.useReadCarsForPageQuery({
     page,
-    itemsPerPage: CARS_PER_GARAGE_PAGE
+    itemsPerPage: CARS_PER_GARAGE_PAGE,
   });
 
   const carsOnPage: Car[] = carsState === undefined ? [] : carsState.items;
@@ -63,36 +57,25 @@ function GaragePage({ page }: GaragePageProps) {
 
   return (
     <div className="garage__page">
-      <CreateCar/>
-      <UpdateCar/>
+      <CreateCar />
+      <UpdateCar />
       <div className="garage__buttons">
-        <Button
-          label='Race'
-          enabled={!pageHasActiveTracks}
-          handleClick={() => startRaceFor(idsOnPage)} />
-        <Button
-          label='Reset'
-          enabled={pageHasActiveTracks}
-          handleClick={() => resetRaceFor(idsOnPage)} />
-        <Button
-          label='Generate cars'
-          handleClick={generateCars} />
+        <Button label="Race" enabled={!pageHasActiveTracks} handleClick={() => startRaceFor(idsOnPage)} />
+        <Button label="Reset" enabled={pageHasActiveTracks} handleClick={() => resetRaceFor(idsOnPage)} />
+        <Button label="Generate cars" handleClick={generateCars} />
       </div>
       <h2 className="garage__cars-counter">Garage ({totalCount})</h2>
       <h3 className="garage__page-number">Page #{page}</h3>
       <div className="garage__cars">
-        <TrackList cars={carsOnPage}/>
+        <TrackList cars={carsOnPage} />
       </div>
       <div className="garage__navigation">
-        <Button
-          label='Prev'
-          enabled={page !== 1}
-          handleClick={() => dispatch(decrementPage())} />
+        <Button label="Prev" enabled={page !== 1} handleClick={() => dispatch(decrementPage())} />
 
-        <Button label='Next' handleClick={() => dispatch(incrementPage())} />
+        <Button label="Next" handleClick={() => dispatch(incrementPage())} />
       </div>
     </div>
-  )
+  );
 }
 
 export default connect(mapToState)(GaragePage);

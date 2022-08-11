@@ -1,7 +1,4 @@
-import { 
-  createSlice,
-  PayloadAction,
-} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GaragePageState {
   currentPage: number;
@@ -11,7 +8,7 @@ interface GaragePageState {
 const initialState: GaragePageState = {
   currentPage: 1,
   carForUpdate: null,
-}
+};
 
 const slice = createSlice({
   name: 'garagePage',
@@ -35,16 +32,10 @@ const slice = createSlice({
 
     removeCarForUpdate(state) {
       state.carForUpdate = null;
-    }
-  }
+    },
+  },
 });
 
-export const {
-  incrementPage,
-  decrementPage,
-  setCarForUpdate,
-  removeCarForUpdate
-} = slice.actions;
+export const { incrementPage, decrementPage, setCarForUpdate, removeCarForUpdate } = slice.actions;
 
 export default slice;
-

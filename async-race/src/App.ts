@@ -14,13 +14,18 @@ export default class App {
   protected reactRoot: ReactDOM.Root;
 
   protected winnersService: WinnersService;
+
   protected engineApiService: EngineApiService;
+
   protected ticker: RealtimeTickerService;
+
   protected carService: CarService;
+
   protected racingService: RacingService;
 
   protected racingServiceContext: IRacingServiceContext;
-  protected carServiceContext: ICarServiceContext
+
+  protected carServiceContext: ICarServiceContext;
 
   constructor(root: HTMLElement) {
     this.engineApiService = new EngineApiService();
@@ -35,11 +40,17 @@ export default class App {
   }
 
   handleWinner(name: string, time: number) {
-    this.reactRoot.render(React.createElement(AppView, {
-      overlayContent: { name, time },
-      racingServiceContext: this.racingServiceContext,
-      carServiceContext: this.carServiceContext
-    }, null));
+    this.reactRoot.render(
+      React.createElement(
+        AppView,
+        {
+          overlayContent: { name, time },
+          racingServiceContext: this.racingServiceContext,
+          carServiceContext: this.carServiceContext,
+        },
+        null
+      )
+    );
 
     setTimeout(this.renderDefault.bind(this), 5000);
   }
@@ -48,7 +59,7 @@ export default class App {
     const progressUpdateCallback: RealtimeTickerCallback = () => {
       const { updateProgress } = tracksSlice.actions;
       store.dispatch(updateProgress());
-    }
+    };
 
     this.ticker.registerCallback(progressUpdateCallback);
     this.ticker.start();
@@ -57,10 +68,16 @@ export default class App {
   }
 
   renderDefault() {
-    this.reactRoot.render(React.createElement(AppView, {
-      overlayContent: null,
-      racingServiceContext: this.racingServiceContext,
-      carServiceContext: this.carServiceContext
-    }, null));
+    this.reactRoot.render(
+      React.createElement(
+        AppView,
+        {
+          overlayContent: null,
+          racingServiceContext: this.racingServiceContext,
+          carServiceContext: this.carServiceContext,
+        },
+        null
+      )
+    );
   }
 }

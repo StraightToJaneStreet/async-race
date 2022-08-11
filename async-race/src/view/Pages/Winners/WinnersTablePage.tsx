@@ -21,21 +21,17 @@ export default function WinnersPage(props: WinnersTablePageProps) {
     itemsPerPage: DEFAULT_ITEMS_PER_PAGE,
     page,
     field: sortingField,
-    order: sortingOrder
+    order: sortingOrder,
   });
 
   const displayedWinners: IWinner[] = fetchedWinners === undefined ? [] : fetchedWinners.items;
   const positionShift = (page - 1) * DEFAULT_ITEMS_PER_PAGE;
 
   return (
-      <>
-        {displayedWinners.map(
-          (winner, position) =>
-            <WinnersTableRow
-              key={winner.id}
-              position={position + positionShift + 1}
-              winner={winner}/>
-        )}
-      </>
+    <>
+      {displayedWinners.map((winner, position) => (
+        <WinnersTableRow key={winner.id} position={position + positionShift + 1} winner={winner} />
+      ))}
+    </>
   );
 }

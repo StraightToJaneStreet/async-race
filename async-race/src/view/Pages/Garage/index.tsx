@@ -5,7 +5,7 @@ import GaragePage from './GaragePage';
 function Garage() {
   return (
     <div className="garage">
-      <GaragePage/>
+      <GaragePage />
     </div>
   );
 }

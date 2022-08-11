@@ -8,10 +8,8 @@ import Winners from './Pages/Winners';
 
 import Button from './components/Button';
 
-interface MainProps { }
-
-const Main = (_props: MainProps) => {
-  const [ page, setPage ] = useState(Page.Garage);
+const Main = () => {
+  const [page, setPage] = useState(Page.Garage);
 
   const navToGaragePage = () => setPage(Page.Garage);
   const navToWinnersPage = () => setPage(Page.Winners);
@@ -20,18 +18,12 @@ const Main = (_props: MainProps) => {
     <div className="application">
       <div className="application__wip-header">I need 1 more day.</div>
       <div className="application__heading">
-        <Button label='To garage' handleClick={navToGaragePage}/>
-        <Button label='To winners' handleClick={navToWinnersPage}/>
+        <Button label="To garage" handleClick={navToGaragePage} />
+        <Button label="To winners" handleClick={navToWinnersPage} />
       </div>
-      { page === Page.Garage
-        ? <Garage/>
-        : page === Page.Winners
-          ? <Winners/>
-          : <p>Invalid page</p>
-      }
+      {page === Page.Garage ? <Garage /> : page === Page.Winners ? <Winners /> : <p>Invalid page</p>}
     </div>
   );
-}
+};
 
 export default Main;
-
