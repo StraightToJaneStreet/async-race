@@ -33,10 +33,10 @@ export default function Winners() {
       <Button
         label='Prev'
         enabled={page !== 1}
-        handleClick={() => dispatch(incrementPage())} />
+        handleClick={() => dispatch(decrementPage())} />
       <Button
         label='Next'
-        handleClick={() => dispatch(decrementPage())} />
+        handleClick={() => dispatch(incrementPage())} />
     </>
   )
 }
