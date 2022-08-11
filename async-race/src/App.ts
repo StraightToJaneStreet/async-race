@@ -2,29 +2,46 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import AppView from './view/App';
-import RacingService from './controller/RacingService';
+import RacingService, { IRacingServiceContext } from './controller/RacingService';
 import RealtimeTickerService, { RealtimeTickerCallback } from './controller/RealtimeTickerService';
 import store from './model/store';
 import tracksSlice from './model/feature/tracks';
-import CarService from './controller/CarService';
+import CarService, { ICarServiceContext } from './controller/CarService';
 import WinnersService from './controller/WinnersService';
 import EngineApiService from './controller/EngineApiService';
 
 export default class App {
   protected reactRoot: ReactDOM.Root;
+
   protected winnersService: WinnersService;
   protected engineApiService: EngineApiService;
   protected ticker: RealtimeTickerService;
   protected carService: CarService;
   protected racingService: RacingService;
 
+  protected racingServiceContext: IRacingServiceContext;
+  protected carServiceContext: ICarServiceContext
+
   constructor(root: HTMLElement) {
     this.engineApiService = new EngineApiService();
-    this.winnersService = new WinnersService();
+    this.winnersService = new WinnersService(this.handleWinner.bind(this));
     this.carService = new CarService();
     this.racingService = new RacingService(this.winnersService, this.engineApiService);
     this.reactRoot = ReactDOM.createRoot(root);
     this.ticker = RealtimeTickerService.getInstance();
+
+    this.racingServiceContext = this.racingService.createteContext();
+    this.carServiceContext = this.carService.createContext();
+  }
+
+  handleWinner(name: string, time: number) {
+    this.reactRoot.render(React.createElement(AppView, {
+      overlayContent: { name, time },
+      racingServiceContext: this.racingServiceContext,
+      carServiceContext: this.carServiceContext
+    }, null));
+
+    setTimeout(this.renderDefault.bind(this), 5000);
   }
 
   run() {
@@ -36,9 +53,14 @@ export default class App {
     this.ticker.registerCallback(progressUpdateCallback);
     this.ticker.start();
 
+    this.renderDefault();
+  }
+
+  renderDefault() {
     this.reactRoot.render(React.createElement(AppView, {
-      racingServiceContext: this.racingService.createteContext(),
-      carServiceContext: this.carService.createContext()
+      overlayContent: null,
+      racingServiceContext: this.racingServiceContext,
+      carServiceContext: this.carServiceContext
     }, null));
   }
 }
