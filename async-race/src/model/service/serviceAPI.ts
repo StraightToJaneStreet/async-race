@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
 import { Car } from '../../core/Car';
 import { IWinner } from '../../core/IWinner';
 import { OrderingType } from '../feature/winnersPage';
@@ -8,7 +9,7 @@ interface EntitySubsetWithTotal<T> {
   items: T[];
 }
 
-export interface CarCreationParams {
+export interface CarCreatingParams {
   name: string;
   color: string;
 }
@@ -89,7 +90,7 @@ export const serviceAPI = createApi({
       }),
     }),
 
-    createCar: build.mutation<CarIdResponse, CarCreationParams>({
+    createCar: build.mutation<CarIdResponse, CarCreatingParams>({
       invalidatesTags: ['Car'],
       query: (params) => ({
         url: 'garage',

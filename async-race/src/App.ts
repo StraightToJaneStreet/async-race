@@ -1,13 +1,19 @@
+import 'reflect-metadata';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import 'reflect-metadata';
 
 import AppView from './view/App';
-import RacingService, { IRacingServiceContext } from './services/RacingService';
-import RealtimeTickerService, { RealtimeTickerCallback } from './services/RealtimeTickerService';
+
 import store from './model/store';
 import tracksSlice from './model/feature/tracks';
-import CarService, { ICarServiceContext } from './services/CarService';
+
+import IRacingServiceContext from './services/contexts/IRacingServiceContext';
+import RacingService from './services/RacingService';
+
+import ICarServiceContext from './services/contexts/ICarServiceContext';
+import CarService from './services/CarService';
+
+import RealtimeTickerService, { RealtimeTickerCallback } from './services/RealtimeTickerService';
 import WinnersService from './services/WinnersService';
 import EngineApiService from './services/EngineApiService';
 

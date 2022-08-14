@@ -9,7 +9,7 @@ import { RootState, storeSelectCreateCarConfigurationState } from '../../../mode
 import Button from '../../components/Button';
 import CarConfiguration from '../../components/CarConfiguration';
 
-import CarServiceContext from '../../CarServiceContext';
+import CarServiceContext from '../../contexts/CarServiceContext';
 
 interface CreateCarProps {
   name: string;

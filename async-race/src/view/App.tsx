@@ -3,11 +3,11 @@ import { Provider } from 'react-redux';
 
 import store from '../model/store';
 
-import { ICarServiceContext } from '../services/CarService';
-import { IRacingServiceContext } from '../services/RacingService';
+import ICarServiceContext from '../services/contexts/ICarServiceContext';
+import IRacingServiceContext from '../services/contexts/IRacingServiceContext';
 
-import CarServiceContext from './CarServiceContext';
-import RacingServiceContext from './RacingServiceContext';
+import CarServiceContext from './contexts/CarServiceContext';
+import RacingServiceContext from './contexts/RacingServiceContext';
 
 import Main from './Main';
 

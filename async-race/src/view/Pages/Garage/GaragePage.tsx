@@ -8,15 +8,15 @@ import { Car } from '../../../core/Car';
 import garagePageSlice from '../../../model/feature/garagePage';
 import { RootState, storeSelectTracks } from '../../../model/store';
 import serviceAPI from '../../../model/service/serviceAPI';
-import RacingServiceContext from '../../RacingServiceContext';
+import RacingServiceContext from '../../contexts/RacingServiceContext';
 import { selectllTracks } from '../../../model/feature/tracks';
-import CarServiceContext from '../../CarServiceContext';
+import CarServiceContext from '../../contexts/CarServiceContext';
 
 import CreateCar from './CreateCar';
 import UpdateCar from './UpdateCar';
 
 import Button from '../../components/Button';
-import TrackList from '../../components/TrackList';
+import TrackList from './TrackList';
 
 interface GaragePageProps {
   page: number;

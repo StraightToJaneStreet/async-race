@@ -1,14 +1,14 @@
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 
-import { Car } from '../../core/Car';
-import { selectTrack } from '../../model/feature/tracks';
-import { storeSelectTracks } from '../../model/store';
+import { Car } from '../../../core/Car';
+import { selectTrack } from '../../..//model/feature/tracks';
+import { storeSelectTracks } from '../../../model/store';
 
-import CarServiceContext from '../CarServiceContext';
+import CarServiceContext from '../../contexts/CarServiceContext';
 
-import Button from './Button';
-import CarComponent from './Car';
+import Button from '../../components/Button';
+import CarComponent from '../../components/Car';
 import EngineStatus from './EngineStatus';
 
 interface TrackProps {

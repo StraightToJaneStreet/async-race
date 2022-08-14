@@ -1,8 +1,9 @@
+import store, { storeSelectTracks } from '../model/store';
 import tracksSlice from '../model/feature/tracks';
-
 import { selectllTracks, selectTrack, TrackInitializationParams } from '../model/feature/tracks';
 
-import store, { storeSelectTracks } from '../model/store';
+import IRacingServiceContext from './contexts/IRacingServiceContext';
+
 import EngineApiService from './EngineApiService';
 import WinnersService from './WinnersService';
 
@@ -10,22 +11,6 @@ interface SuccesfulRaceEndParams {
   id: number;
   duration: number;
 }
-
-function defaultContextImplementation(..._ags: unknown[]): void {}
-
-export interface IRacingServiceContext {
-  startCar: (carId: number) => void;
-  stopCar: (carId: number) => void;
-  startRaceFor: (carIds: number[]) => void;
-  resetRaceFor: (carIds: number[]) => void;
-}
-
-export const defaultRacingServiceContext: IRacingServiceContext = {
-  startCar: defaultContextImplementation,
-  stopCar: defaultContextImplementation,
-  startRaceFor: defaultContextImplementation,
-  resetRaceFor: defaultContextImplementation,
-};
 
 export default class RacingService {
   constructor(protected winnersService: WinnersService, protected engineApiService: EngineApiService) {}

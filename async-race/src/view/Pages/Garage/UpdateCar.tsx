@@ -7,7 +7,7 @@ import CarConfiguration from '../../components/CarConfiguration';
 import updateCarConfigurationSlice from '../../../model/feature/updateCar';
 import { connect, useSelector } from 'react-redux';
 
-import CarServiceContext from '../../CarServiceContext';
+import CarServiceContext from '../../contexts/CarServiceContext';
 
 interface UpdateCarProps {
   color: string;

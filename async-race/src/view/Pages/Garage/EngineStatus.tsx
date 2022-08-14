@@ -1,9 +1,10 @@
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
-import { selectTrack } from '../../model/feature/tracks';
-import { storeSelectTracks } from '../../model/store';
 
-import RacingServiceContext from '../RacingServiceContext';
+import { selectTrack } from '../../../model/feature/tracks';
+import { storeSelectTracks } from '../../../model/store';
+
+import RacingServiceContext from '../../contexts/RacingServiceContext';
 
 interface EngineStatusProps {
   carId: number;
