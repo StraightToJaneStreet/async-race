@@ -1,14 +1,15 @@
 import React from 'react';
-
 import { Provider } from 'react-redux';
 
-import { ICarServiceContext } from '../controller/CarService';
-import { IRacingServiceContext } from '../controller/RacingService';
-import CarServiceContext from './CarServiceContext';
-
 import store from '../model/store';
-import Main from './Main';
+
+import { ICarServiceContext } from '../services/CarService';
+import { IRacingServiceContext } from '../services/RacingService';
+
+import CarServiceContext from './CarServiceContext';
 import RacingServiceContext from './RacingServiceContext';
+
+import Main from './Main';
 
 interface WinnerMessage {
   name: string;
