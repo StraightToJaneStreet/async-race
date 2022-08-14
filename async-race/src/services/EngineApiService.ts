@@ -1,3 +1,7 @@
+import { injectable } from 'inversify';
+
+import IEngineAPIService from './interfaces/IEngineApiService';
+
 const DEFAULT_API_ADDRESS = 'localhost';
 const DEFAULT_API_PORT = '3000';
 
@@ -51,7 +55,8 @@ const createURIWithQueryParams = (protocol: Protocol, host: string, path: string
   return `${baseEndpoint}?${queryParamsSuffix}`;
 };
 
-export default class EngineApiService {
+@injectable()
+export default class EngineApiService implements IEngineAPIService {
   protocol: Protocol = Protocol.HTTP;
 
   address = `${DEFAULT_API_ADDRESS}:${DEFAULT_API_PORT}`;

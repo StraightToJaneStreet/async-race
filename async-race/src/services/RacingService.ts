@@ -1,19 +1,26 @@
+import { injectable, inject } from 'inversify';
+
 import store, { storeSelectTracks } from '../model/store';
 import tracksSlice from '../model/feature/tracks';
 import { selectllTracks, selectTrack, TrackInitializationParams } from '../model/feature/tracks';
 
-import IRacingServiceContext from './contexts/IRacingServiceContext';
+import IRacingService from './interfaces/IRacingService';
 
 import EngineApiService from './EngineApiService';
 import WinnersService from './WinnersService';
+import { TYPES } from '../InjectionTypes';
 
 interface SuccesfulRaceEndParams {
   id: number;
   duration: number;
 }
 
-export default class RacingService {
-  constructor(private winnersService: WinnersService, private engineApiService: EngineApiService) {}
+@injectable()
+export default class RacingService implements IRacingService {
+  constructor(
+    @inject(TYPES.WinnersService) private winnersService: WinnersService,
+    @inject(TYPES.EngineApiService) private engineApiService: EngineApiService
+  ) {}
 
   private createTrackPromise(carId: number): Promise<SuccesfulRaceEndParams> {
     const trackPromise: Promise<SuccesfulRaceEndParams> = new Promise((resolve, reject) => {
@@ -67,7 +74,7 @@ export default class RacingService {
     this.stopCarEngine(track.carId);
   }
 
-  startRace(carIds: number[]): void {
+  startRaceFor(carIds: number[]): void {
     const tracks = carIds.map((carId) => this.createTrackPromise(carId));
 
     new Promise<SuccesfulRaceEndParams>((resolve, reject) => {
@@ -102,15 +109,6 @@ export default class RacingService {
       .forEach((track) => {
         this.stopCarEngine(track.carId);
       });
-  }
-
-  createteContext(): IRacingServiceContext {
-    return {
-      startRaceFor: this.startRace.bind(this),
-      resetRaceFor: this.resetRaceFor.bind(this),
-      startCar: this.startCar.bind(this),
-      stopCar: this.stopCar.bind(this),
-    };
   }
 
   private stopCarEngine(carId: number) {

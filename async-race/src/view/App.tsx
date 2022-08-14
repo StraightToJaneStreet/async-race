@@ -3,25 +3,15 @@ import { Provider } from 'react-redux';
 
 import store from '../model/store';
 
-import ICarServiceContext from '../services/contexts/ICarServiceContext';
-import IRacingServiceContext from '../services/contexts/IRacingServiceContext';
-
-import CarServiceContext from './contexts/CarServiceContext';
-import RacingServiceContext from './contexts/RacingServiceContext';
+import IWinnerMessage from '../core/IWinnerMessage';
 
 import Main from './Main';
 
-interface WinnerMessage {
-  name: string;
-  time: number;
-}
 interface Props {
-  overlayContent: WinnerMessage | null;
-  carServiceContext: ICarServiceContext;
-  racingServiceContext: IRacingServiceContext;
+  overlayContent: IWinnerMessage | null;
 }
 
-export default function WrappedMain({ overlayContent, carServiceContext, racingServiceContext }: Props) {
+export default function WrappedMain({ overlayContent }: Props) {
   const overlay =
     overlayContent !== null ? (
       <div className="overlay">
@@ -37,12 +27,8 @@ export default function WrappedMain({ overlayContent, carServiceContext, racingS
 
   return (
     <Provider store={store}>
-      <CarServiceContext.Provider value={carServiceContext}>
-        <RacingServiceContext.Provider value={racingServiceContext}>
-          <Main />
-          {overlay}
-        </RacingServiceContext.Provider>
-      </CarServiceContext.Provider>
+      <Main />
+      {overlay}
     </Provider>
   );
 }

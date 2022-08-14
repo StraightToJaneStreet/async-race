@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   useDispatch,
   connect,
@@ -12,14 +12,17 @@ import garagePageSlice from '../../../model/feature/garagePage';
 import { selectllTracks } from '../../../model/feature/tracks';
 import serviceAPI from '../../../model/service/serviceAPI';
 
-import RacingServiceContext from '../../contexts/RacingServiceContext';
-import CarServiceContext from '../../contexts/CarServiceContext';
+import DIContainer from '../../../DIContainer';
+import { TYPES } from '../../../InjectionTypes';
+import ICarService from '../../../services/interfaces/ICarService';
+import IRacingService from '../../../services/interfaces/IRacingService';
 
 import Button from '../../components/Button';
 
 import CreateCar from './CreateCar';
 import UpdateCar from './UpdateCar';
 import TrackList from './TrackList';
+
 
 interface GaragePageProps {
   page: number;
@@ -34,9 +37,8 @@ const mapToState = (state: RootState): GaragePageProps => {
 const CARS_PER_GARAGE_PAGE = 7;
 
 function GaragePage({ page }: GaragePageProps) {
-  const { generateCars } = useContext(CarServiceContext);
-
-  const { startRaceFor, resetRaceFor } = useContext(RacingServiceContext);
+  const carService = DIContainer.get<ICarService>(TYPES.CarService);
+  const racingService = DIContainer.get<IRacingService>(TYPES.RacingService);
 
   const { incrementPage, decrementPage } = garagePageSlice.actions;
 
@@ -63,9 +65,9 @@ function GaragePage({ page }: GaragePageProps) {
       <CreateCar />
       <UpdateCar />
       <div className="garage__buttons">
-        <Button label="Race" enabled={!pageHasActiveTracks} handleClick={() => startRaceFor(idsOnPage)} />
-        <Button label="Reset" enabled={pageHasActiveTracks} handleClick={() => resetRaceFor(idsOnPage)} />
-        <Button label="Generate cars" handleClick={generateCars} />
+        <Button label="Race" enabled={!pageHasActiveTracks} handleClick={() => racingService.startRaceFor(idsOnPage)} />
+        <Button label="Reset" enabled={pageHasActiveTracks} handleClick={() => racingService.resetRaceFor(idsOnPage)} />
+        <Button label="Generate cars" handleClick={carService.generateCars} />
       </div>
       <h2 className="garage__cars-counter">Garage ({totalCount})</h2>
       <h3 className="garage__page-number">Page #{page}</h3>

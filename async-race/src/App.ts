@@ -1,69 +1,42 @@
-import 'reflect-metadata';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { inject, injectable } from 'inversify';
 
 import AppView from './view/App';
 
 import store from './model/store';
 import tracksSlice from './model/feature/tracks';
 
-import IRacingServiceContext from './services/contexts/IRacingServiceContext';
-import RacingService from './services/RacingService';
+import { TYPES } from './InjectionTypes';
+import IAnimationTickerService, { TickerCallback } from './services/interfaces/IAnimationTicker';
 
-import ICarServiceContext from './services/contexts/ICarServiceContext';
-import CarService from './services/CarService';
+import IApplication from './IApplication';
+import IWinnerMessage from './core/IWinnerMessage';
+import IWinnersHandler from './services/interfaces/IWinnersHandler';
 
-import RealtimeTickerService, { RealtimeTickerCallback } from './services/RealtimeTickerService';
-import WinnersService from './services/WinnersService';
-import EngineApiService from './services/EngineApiService';
+@injectable()
+export default class App implements IApplication, IWinnersHandler {
+  private reactRoot: ReactDOM.Root | null = null;
+  private winner: IWinnerMessage | null = null;
 
-export default class App {
-  private reactRoot: ReactDOM.Root;
-
-  private winnersService: WinnersService;
-
-  private engineApiService: EngineApiService;
-
-  private ticker: RealtimeTickerService;
-
-  private carService: CarService;
-
-  private racingService: RacingService;
-
-  private racingServiceContext: IRacingServiceContext;
-
-  private carServiceContext: ICarServiceContext;
-
-  constructor(root: HTMLElement) {
-    this.engineApiService = new EngineApiService();
-    this.winnersService = new WinnersService(this.handleWinner.bind(this));
-    this.carService = new CarService();
-    this.racingService = new RacingService(this.winnersService, this.engineApiService);
-    this.reactRoot = ReactDOM.createRoot(root);
-    this.ticker = RealtimeTickerService.getInstance();
-
-    this.racingServiceContext = this.racingService.createteContext();
-    this.carServiceContext = this.carService.createContext();
-  }
+  constructor(
+    @inject(TYPES.AnimationTickerService) private ticker: IAnimationTickerService
+  ) {}
 
   handleWinner(name: string, time: number) {
-    this.reactRoot.render(
-      React.createElement(
-        AppView,
-        {
-          overlayContent: { name, time },
-          racingServiceContext: this.racingServiceContext,
-          carServiceContext: this.carServiceContext,
-        },
-        null
-      )
-    );
+    this.winner = { name, time };
+    this.render();
 
-    setTimeout(this.renderDefault.bind(this), 5000);
+    setTimeout(() => {
+      this.winner = null;
+      this.render();
+    }, 5000);
   }
 
-  run() {
-    const progressUpdateCallback: RealtimeTickerCallback = () => {
+  run(root: HTMLDivElement) {
+    this.reactRoot = ReactDOM.createRoot(root);
+
+    const progressUpdateCallback: TickerCallback = () => {
       const { updateProgress } = tracksSlice.actions;
       store.dispatch(updateProgress());
     };
@@ -71,17 +44,15 @@ export default class App {
     this.ticker.registerCallback(progressUpdateCallback);
     this.ticker.start();
 
-    this.renderDefault();
+    this.render();
   }
 
-  renderDefault() {
-    this.reactRoot.render(
+  render() {
+    this.reactRoot?.render(
       React.createElement(
         AppView,
         {
-          overlayContent: null,
-          racingServiceContext: this.racingServiceContext,
-          carServiceContext: this.carServiceContext,
+          overlayContent: this.winner,
         },
         null
       )

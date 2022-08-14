@@ -1,18 +1,19 @@
+import { inject, injectable } from 'inversify';
+
 import store, { storeSelectTracks } from '../model/store';
 import { selectTrack } from '../model/feature/tracks';
 import serviceAPI from '../model/service/serviceAPI';
 
-interface HandleRacingVictoryParams {
-  id: number;
-  time: number;
-}
+import { TYPES } from '../InjectionTypes';
 
-interface HandleWinnerCallback {
-  (name: string, time: number): void;
-}
+import IWinnerService, { HandleRacingVictoryParams } from './interfaces/IWinnersService';
+import IWinnersHandler from './interfaces/IWinnersHandler';
 
-export default class WinnersService {
-  constructor(private handleWinnerCallback: HandleWinnerCallback) { }
+@injectable()
+export default class WinnersService implements IWinnerService {
+  constructor(
+    @inject(TYPES.WinnersHandler) private winnersHandler: IWinnersHandler
+  ) { }
 
   handleRacingVictory({ id, time }: HandleRacingVictoryParams) {
     const prettyTime = Math.trunc(time * 100) / 100;
@@ -52,7 +53,7 @@ export default class WinnersService {
 
     carSubscription.then(({ data: car }) => {
       if (car !== undefined) {
-        this.handleWinnerCallback(car.name, time);
+        this.winnersHandler.handleWinner(car.name, time);
       }
     });
   }

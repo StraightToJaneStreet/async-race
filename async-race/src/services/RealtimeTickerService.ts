@@ -1,27 +1,18 @@
-export type RealtimeTickerCallback = () => void;
+import { injectable } from 'inversify';
 
-export default class RealtimeTickerService {
-  static instance: RealtimeTickerService | null = null;
+import IAnimationTickerService, { TickerCallback } from './interfaces/IAnimationTicker';
 
-  static getInstance(): RealtimeTickerService {
-    if (RealtimeTickerService.instance === null) {
-      RealtimeTickerService.instance = new RealtimeTickerService();
-    }
-
-    return RealtimeTickerService.instance;
-  }
-
-  private constructor() {}
-
+@injectable()
+export default class RealtimeTickerService implements IAnimationTickerService {
   private needStop = false;
 
-  private tracks: Set<RealtimeTickerCallback> = new Set();
+  private tracks: Set<TickerCallback> = new Set();
 
-  registerCallback(callback: RealtimeTickerCallback) {
+  registerCallback(callback: TickerCallback) {
     this.tracks.add(callback);
   }
 
-  removeCallack(callback: RealtimeTickerCallback) {
+  removeCallback(callback: TickerCallback) {
     this.tracks.delete(callback);
   }
 

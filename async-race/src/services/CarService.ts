@@ -1,12 +1,12 @@
-import garagePageSlice from '../model/feature/garagePage';
-
-import updateCarConfigurationReducer from '../model/feature/updateCar';
+import { injectable } from 'inversify';
 
 import store, { storeSelectGaragePage } from '../model/store';
+import garagePageSlice from '../model/feature/garagePage';
+import updateCarConfigurationReducer from '../model/feature/updateCar';
 import serviceAPI from '../model/service/serviceAPI';
 
-import { CarCreationParams, CarDeletingParams, CarUpdatingParams } from './contexts/ICarServiceContext';
-import ICarServiceContext from './contexts/ICarServiceContext';
+import ICarService from './interfaces/ICarService';
+import { CarCreatingParams, CarDeletingParams, CarUpdatingParams } from './interfaces/ICarService';
 
 const carPrefixer = ['Audi', 'Tesla', 'BMW', 'Peugeot', 'Lada', 'Jaguar', 'Ford'];
 const carSuffixes = ['Model A', 'Model B', 'A1', 'B2', 'C3', 'Kalina', 'Granta'];
@@ -24,7 +24,7 @@ const randomColor = (): string => {
   return `#${r}${g}${b}`;
 };
 
-const randomCar = (): CarCreationParams => {
+const randomCar = (): CarCreatingParams => {
   const prefix = peek(carPrefixer);
   const suffix = peek(carSuffixes);
   const name = `${prefix} ${suffix}`;
@@ -33,9 +33,9 @@ const randomCar = (): CarCreationParams => {
   return { name, color };
 };
 
-
-export default class CarService {
-  createCar(params: CarCreationParams) {
+@injectable()
+export default class CarService implements ICarService {
+  createCar(params: CarCreatingParams) {
     store.dispatch(serviceAPI.endpoints.createCar.initiate(params));
   }
 
@@ -87,15 +87,5 @@ export default class CarService {
       store.dispatch(setName(data.name));
       store.dispatch(setColor(data.color));
     });
-  }
-
-  createContext(): ICarServiceContext {
-    return {
-      createCar: this.createCar.bind(this),
-      updateCar: this.updateCar.bind(this),
-      deleteCar: this.deleteCar.bind(this),
-      generateCars: this.generateCars.bind(this),
-      selectCarForUpdate: this.selectCarForUpdate.bind(this),
-    };
   }
 }
