@@ -8,7 +8,7 @@ interface CarConfigurationProps {
   name: string;
 }
 
-export default function CarConfiguration({ updateColor, updateName, color, name, enabled }: CarConfigurationProps) {
+export default function CarConfiguration({ updateColor, updateName, color, name, enabled = true }: CarConfigurationProps) {
   const isEnabled = enabled === undefined ? true : enabled;
 
   return (
