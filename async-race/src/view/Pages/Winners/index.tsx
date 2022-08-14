@@ -1,11 +1,10 @@
 import React from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
-
-import serviceAPI from '../../../model/service/serviceAPI';
 
 import { storeSelectWinnersPageParams } from '../../../model/store';
 import winnersPageSlice from '../../../model/feature/winnersPage';
+import serviceAPI from '../../../model/service/serviceAPI';
+
 import WinnersTable from './WinnersTable';
 import Button from '../../components/Button';
 

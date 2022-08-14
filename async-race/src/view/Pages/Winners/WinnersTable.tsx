@@ -1,12 +1,13 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
+import {
+  useSelector,
+  useDispatch
+} from 'react-redux';
 
 import { storeSelectWinnersPageParams } from '../../../model/store';
 import winnersPageSlice, { OrderingField } from '../../../model/feature/winnersPage';
 import { OrderingType } from '../../../model/feature/winnersPage';
 import WinnersTablePage from './WinnersTablePage';
-
-import { useDispatch } from 'react-redux';
 
 interface WinnersTableProps {
   page: number;

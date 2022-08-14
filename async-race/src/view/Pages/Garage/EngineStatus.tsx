@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { useSelector } from 'react-redux';
 
-import { selectTrack } from '../../../model/feature/tracks';
 import { storeSelectTracks } from '../../../model/store';
+import { selectTrack } from '../../../model/feature/tracks';
 
 import RacingServiceContext from '../../contexts/RacingServiceContext';
 

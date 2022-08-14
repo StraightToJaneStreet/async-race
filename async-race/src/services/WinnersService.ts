@@ -1,6 +1,6 @@
+import store, { storeSelectTracks } from '../model/store';
 import { selectTrack } from '../model/feature/tracks';
 import serviceAPI from '../model/service/serviceAPI';
-import store, { storeSelectTracks } from '../model/store';
 
 interface HandleRacingVictoryParams {
   id: number;
@@ -12,11 +12,7 @@ interface HandleWinnerCallback {
 }
 
 export default class WinnersService {
-  winners: Set<number>;
-
-  constructor(protected handleWinnerCallback: HandleWinnerCallback) {
-    this.winners = new Set();
-  }
+  constructor(private handleWinnerCallback: HandleWinnerCallback) { }
 
   handleRacingVictory({ id, time }: HandleRacingVictoryParams) {
     const prettyTime = Math.trunc(time * 100) / 100;

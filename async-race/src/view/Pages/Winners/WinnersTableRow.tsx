@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { IWinner } from '../../../core/IWinner';
+
 import serviceAPI from '../../../model/service/serviceAPI';
 
 import CarModel from '../../components/Car';

@@ -11,11 +11,11 @@ export default class RealtimeTickerService {
     return RealtimeTickerService.instance;
   }
 
-  protected constructor() {}
+  private constructor() {}
 
-  protected needStop = false;
+  private needStop = false;
 
-  protected tracks: Set<RealtimeTickerCallback> = new Set();
+  private tracks: Set<RealtimeTickerCallback> = new Set();
 
   registerCallback(callback: RealtimeTickerCallback) {
     this.tracks.add(callback);
@@ -34,7 +34,7 @@ export default class RealtimeTickerService {
     this.needStop = true;
   }
 
-  protected tick() {
+  private tick() {
     if (this.needStop === true) {
       return;
     }

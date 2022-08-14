@@ -1,15 +1,13 @@
-import React from 'react';
-import { useContext } from 'react';
-
+import React, { useContext } from 'react';
 import { connect, useDispatch } from 'react-redux';
 
-import createCarConfigurationSlice from '../../../model/feature/createCar';
 import { RootState, storeSelectCreateCarConfigurationState } from '../../../model/store';
+import createCarConfigurationSlice from '../../../model/feature/createCar';
+
+import CarServiceContext from '../../contexts/CarServiceContext';
 
 import Button from '../../components/Button';
 import CarConfiguration from '../../components/CarConfiguration';
-
-import CarServiceContext from '../../contexts/CarServiceContext';
 
 interface CreateCarProps {
   name: string;

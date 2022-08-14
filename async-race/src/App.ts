@@ -18,21 +18,21 @@ import WinnersService from './services/WinnersService';
 import EngineApiService from './services/EngineApiService';
 
 export default class App {
-  protected reactRoot: ReactDOM.Root;
+  private reactRoot: ReactDOM.Root;
 
-  protected winnersService: WinnersService;
+  private winnersService: WinnersService;
 
-  protected engineApiService: EngineApiService;
+  private engineApiService: EngineApiService;
 
-  protected ticker: RealtimeTickerService;
+  private ticker: RealtimeTickerService;
 
-  protected carService: CarService;
+  private carService: CarService;
 
-  protected racingService: RacingService;
+  private racingService: RacingService;
 
-  protected racingServiceContext: IRacingServiceContext;
+  private racingServiceContext: IRacingServiceContext;
 
-  protected carServiceContext: ICarServiceContext;
+  private carServiceContext: ICarServiceContext;
 
   constructor(root: HTMLElement) {
     this.engineApiService = new EngineApiService();

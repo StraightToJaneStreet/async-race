@@ -13,9 +13,9 @@ interface SuccesfulRaceEndParams {
 }
 
 export default class RacingService {
-  constructor(protected winnersService: WinnersService, protected engineApiService: EngineApiService) {}
+  constructor(private winnersService: WinnersService, private engineApiService: EngineApiService) {}
 
-  protected createTrackPromise(carId: number): Promise<SuccesfulRaceEndParams> {
+  private createTrackPromise(carId: number): Promise<SuccesfulRaceEndParams> {
     const trackPromise: Promise<SuccesfulRaceEndParams> = new Promise((resolve, reject) => {
       const startTimestamp = performance.now();
       this.engineApiService
@@ -113,7 +113,7 @@ export default class RacingService {
     };
   }
 
-  protected stopCarEngine(carId: number) {
+  private stopCarEngine(carId: number) {
     const { resetTrack } = tracksSlice.actions;
     store.dispatch(resetTrack(carId));
     this.engineApiService.stopEngine(carId);
