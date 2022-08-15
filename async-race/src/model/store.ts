@@ -8,6 +8,8 @@ import updateCarSlice from './feature/updateCar';
 import garagePageSlice from './feature/garagePage';
 import winnersPageSlice from './feature/winnersPage';
 
+import winnerMessage from './feature/winnerMessage';
+
 import serviceAPI from './service/serviceAPI';
 
 const store = configureStore({
@@ -17,6 +19,7 @@ const store = configureStore({
     [garagePageSlice.name]: garagePageSlice.reducer,
     [tracksSlice.name]: tracksSlice.reducer,
     [winnersPageSlice.name]: winnersPageSlice.reducer,
+    [winnerMessage.name]: winnerMessage.reducer,
     [serviceAPI.reducerPath]: serviceAPI.reducer,
   },
 
@@ -40,5 +43,8 @@ export const storeSelectTracks = (state: RootState): ReturnType<typeof tracksSli
 
 export const storeSelectWinnersPageParams = (state: RootState): ReturnType<typeof winnersPageSlice.reducer> =>
   state[winnersPageSlice.name];
+
+export const storeSelectWinnerMessage = (state: RootState): ReturnType<typeof winnerMessage.reducer> =>
+  state[winnerMessage.name];
 
 export default store;

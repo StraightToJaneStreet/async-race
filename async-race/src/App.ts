@@ -11,27 +11,14 @@ import { TYPES } from './InjectionTypes';
 import IAnimationTickerService, { TickerCallback } from './services/interfaces/IAnimationTicker';
 
 import IApplication from './IApplication';
-import IWinnerMessage from './core/IWinnerMessage';
-import IWinnersHandler from './services/interfaces/IWinnersHandler';
 
 @injectable()
-export default class App implements IApplication, IWinnersHandler {
+export default class App implements IApplication {
   private reactRoot: ReactDOM.Root | null = null;
-  private winner: IWinnerMessage | null = null;
 
   constructor(
     @inject(TYPES.AnimationTickerService) private ticker: IAnimationTickerService
   ) {}
-
-  handleWinner(name: string, time: number) {
-    this.winner = { name, time };
-    this.render();
-
-    setTimeout(() => {
-      this.winner = null;
-      this.render();
-    }, 5000);
-  }
 
   run(root: HTMLDivElement) {
     this.reactRoot = ReactDOM.createRoot(root);
@@ -48,14 +35,10 @@ export default class App implements IApplication, IWinnersHandler {
   }
 
   render() {
-    this.reactRoot?.render(
-      React.createElement(
-        AppView,
-        {
-          overlayContent: this.winner,
-        },
-        null
-      )
-    );
+    if (this.reactRoot === null) {
+      throw Error('Cant render without initialized ReactDOM.Root');
+    }
+    const reactElement = React.createElement(AppView, {}, null);
+    this.reactRoot.render(reactElement);
   }
 }

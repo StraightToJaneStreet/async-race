@@ -19,13 +19,11 @@ import IWinnerService from './services/interfaces/IWinnersService';
 import WinnersService from './services/WinnersService';
 
 import IApplication from './IApplication';
-import IWinnersHandler from './services/interfaces/IWinnersHandler';
 import App from './App';
 
 const DIContainer = new Container();
 
-DIContainer.bind<IWinnersHandler>(TYPES.WinnersHandler).to(App).inSingletonScope();
-DIContainer.bind<IApplication>(TYPES.App).toService(TYPES.WinnersHandler);
+DIContainer.bind<IApplication>(TYPES.App).to(App);
 DIContainer.bind<IRacingService>(TYPES.RacingService).to(RacingService).inSingletonScope();
 DIContainer.bind<IWinnerService>(TYPES.WinnersService).to(WinnersService).inSingletonScope();
 DIContainer.bind<ICarService>(TYPES.CarService).to(CarService).inSingletonScope();

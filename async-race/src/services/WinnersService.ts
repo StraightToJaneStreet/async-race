@@ -1,20 +1,15 @@
-import { inject, injectable } from 'inversify';
+import { injectable } from 'inversify';
 
 import store, { storeSelectTracks } from '../model/store';
 import { selectTrack } from '../model/feature/tracks';
 import serviceAPI from '../model/service/serviceAPI';
 
-import { TYPES } from '../InjectionTypes';
-
 import IWinnerService, { HandleRacingVictoryParams } from './interfaces/IWinnersService';
-import IWinnersHandler from './interfaces/IWinnersHandler';
+import winnerMessageSlice from '../model/feature/winnerMessage';
+import { WINNER_MESSAGE_DURATION } from '../core/Constants';
 
 @injectable()
 export default class WinnersService implements IWinnerService {
-  constructor(
-    @inject(TYPES.WinnersHandler) private winnersHandler: IWinnersHandler
-  ) { }
-
   handleRacingVictory({ id, time }: HandleRacingVictoryParams) {
     const prettyTime = Math.trunc(time * 100) / 100;
 
@@ -51,10 +46,17 @@ export default class WinnersService implements IWinnerService {
 
     const carSubscription = store.dispatch(serviceAPI.endpoints.readCar.initiate({ id }));
 
-    carSubscription.then(({ data: car }) => {
-      if (car !== undefined) {
-        this.winnersHandler.handleWinner(car.name, time);
+    carSubscription.then(({ data: car }) => {      
+      if (car == undefined) {
+        return;
       }
+      const { setWinner, resetWinner } = winnerMessageSlice.actions;
+
+      store.dispatch(setWinner({ name: car.name, time }));
+
+      setTimeout(() => {
+        store.dispatch(resetWinner())
+      }, WINNER_MESSAGE_DURATION);
     });
   }
 }
